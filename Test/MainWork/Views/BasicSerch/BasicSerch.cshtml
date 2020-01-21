@@ -1,0 +1,102 @@
+﻿@model IEnumerable<MainWork.tAlbumType>
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <style>
+        * {
+            font-family: "微軟正黑體";
+            color: white;
+            font-weight: 700;
+            font-size: 20px;
+        }
+
+        .panel {
+            /* 方塊浮動(不用float)，自動換行，*/
+            display: flex;
+            flex-wrap: wrap;
+            /*align-items: stretch;*/
+            /*align-content: stretch;*//*還不曉得怎麼發揮作用*/
+            position: absolute;
+            background-color: #2b2828;
+            padding: 10px;
+        }
+
+        .typeBlock {
+            /* 寬高單位同為vw或vx可達成等比例縮放的方形效果 */
+            width: 13vw;
+            height: 13vw;
+            min-width: 150px;
+            min-height: 150px;
+            border-radius: 10px;
+            margin: 10px;
+            padding: 10px;
+            background-color: #6bc477;
+            /*輕微漸層效果，意外的很帶感*/
+            background-image: linear-gradient(to bottom,#16161660 15%,#6bc477);
+            overflow: hidden;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .typeBlock:hover {
+            width: 14vw;
+            height: 14vw;
+            min-width: 165px;
+            min-height: 165px;
+            margin: 2px;
+        }
+
+        .photo {
+            position: relative;
+            width: 70%;
+            height: 70%;
+            bottom: -25%;
+            right: -50%;
+            /* 設置音樂封面作為背景圖片，使圖片填滿div，添加陰影，斜向旋轉，輕微透明效果 */
+            background-image: url("#");
+            background-size: cover;
+            box-shadow: 0px 1px 1px 1px #0000004b;
+            transform: rotate(25deg);
+            opacity: 0.75;
+        }
+    </style>
+    <title>BasicSerch</title>
+</head>
+<body>
+    <h2>所有類型</h2>
+    <div class="panel">
+    @{string[] color = new string[] {"#FF8789","#C158E8","#6E7AFF","#58D5E8","#A6FFB4","#C7E874","#FFE98B","#E8B274","#F587DE", }; }
+        @foreach (var item in Model)
+        {
+            string id = Html.DisplayFor(modelItem => item.fTypeID).ToString();
+            <div class="typeBlock" data-type="@id">
+                <span class="typeName">@Html.DisplayFor(modelItem => item.fTypeName)</span>
+                <div class="photo" style="background-image:url(/Images/@(id).jpg)"></div>
+            </div>
+        }
+    </div>
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+        <script>
+            //讓類別窗格不同色的程式碼，暫時是寫死的(9種顏色而已)
+            var color = ["#FF8789", "#C158E8", "#6E7AFF", "#58D5E8", "#A6FFB4", "#C7E874", "#FFE98B", "#E8B274", "#F587DE"];
+            var c = $(".typeBlock");
+            for (var i = 0; i < c.length; i++) {
+                c.eq(i).css("background-color", color[i]);
+                c.eq(i).css("background-image", `linear-gradient(to bottom,#16161660 15%,${color[i]})`);
+            }
+        </script>
+    </body>
+</html>
