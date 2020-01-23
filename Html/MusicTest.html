@@ -1,0 +1,308 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>Title</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <style>
+        *{
+            font-family: '微軟正黑體';
+            color:whitesmoke;
+            font-weight: 500;
+        }
+        #playerPanel{
+            position: relative;
+            width: 100%;
+            min-width: 1200px;
+            height: 130px;
+            background: #5c616e;
+        }
+        #titlePanel{
+            position: absolute;
+            left:100px;
+            width:200px;
+            height:100px;
+            margin:10px;
+            background:none;
+        }
+        img.title{
+            width:90px;
+            height:90px;
+            margin:5px 5px 0px 5px;
+        }
+        figure{
+            position: absolute;
+            width:100px;
+            margin:5px;
+            color:white;
+        }
+        figcaption{
+            margin:5px;
+            text-align: center;
+        }
+        .Description{
+            font-size: 12px;
+            overflow: hidden;
+        }
+        #singer{
+            color: rgb(199, 194, 194);
+            font-style: italic;
+            font-size: 10px;
+        }
+        #btnPanel{
+            position:relative;
+            top:10px;
+            width:50%;
+            margin: auto;
+            text-align: center;
+            background: #5c616e;;
+        }
+        #progressPanel{
+            position:relative;
+            width:60%;
+            margin: 20px auto;
+            text-align: center;
+            background:#5c616e;
+        }
+        #volumePanel{
+            position:absolute;
+            right:0px;
+            top: 50px;
+            background: #5c616e;
+            width:160px;
+        }
+        .sound{
+            width: 30px;
+            height:22px;
+            filter: invert();
+        }
+        #volumeBar{
+            -webkit-appearance: none;
+            border-radius:50px;
+            width: 100px;
+            height: 5px;
+            outline:none;
+        }
+
+        #volumeBar:hover,
+        #progress:hover,
+        .sound:hover
+        {
+            cursor: pointer;
+        }
+       
+        #progress{
+            -webkit-appearance:none;
+            border-radius:50px;
+            top:50px;
+            width:80%;
+            height:5px;
+            /*下面這個不關掉的話選取進度條時會出現藍框*/
+            outline:none;
+            margin:auto;
+            transition: 0.2s;
+        }
+
+        input::-webkit-slider-thumb{
+            -webkit-appearance: none;
+            position: relative;
+            width: 11px;
+            height: 11px;
+            background: rgb(201, 201, 201);
+            border-radius:50%;
+            transition: 0.2s;
+        }
+        input::-webkit-slider-runnable-track{
+            transition: 0.5s;
+        }
+        input::-webkit-slider-thumb:hover{
+            width: 15px;
+            height: 15px;
+        }
+        .btn:hover{
+            background: skyblue;
+            cursor: pointer;
+        }
+        .btn:active{
+            background:silver;
+        }
+         .btn img{
+            width: 40px;
+            height:30px;
+            margin: 10px;
+            filter: invert();
+        }
+        
+    </style>
+
+  </head>
+  <body>
+      <!-- 播放器介面div -->
+      <div id="playerPanel">
+
+         <!-- 封面與歌名div -->
+         <figure>
+            <img  src="images/1024px-奉封面.jpg" class="title">
+            <figcaption class="Description title">奉</figcaption>
+        </figure>
+          <div id ="titlePanel">
+                  <span class="Description">‪12 「テーマ・オブ・カーテンファイアーシューターズ」 -History 3-3-</span><br>
+                  <span id = "singer">めらみぽっぷ</span>
+          </div>
+
+
+         <!-- 基本按鍵div -->
+          <div id="btnPanel">
+              <div id="random" class="btn"><img src="PlayerImg/random.png" ></div>
+              <div id="prev" class="btn"><img src="PlayerImg/prev.png" ></div>
+              <div id="play" class="btn"><img src="PlayerImg/play.png" ></div>
+              <div id="pause" class="btn"><img src="PlayerImg/pause.png" ></div>
+              <div id="next" class="btn"><img src="PlayerImg/next.png" ></div>
+              <div id="replay" class="btn"><img src="PlayerImg/replay.png" ></div>
+          </div>
+
+         <!-- 進度條div -->
+            <div id="progressPanel">
+                <span id="nowTime">00:00</span>
+                <input id="progress" type="range" min="0" max="100" step="0.01" value="0">
+                <span id="totalTime">00:00</span>
+            </div>
+
+            <!-- 音量條div -->
+          <div id="volumePanel">
+            <img src="PlayerImg/sound.png" data-sound="volumeImg" id="volumeImg" class="sound" >
+            <img src="PlayerImg/mute.png" data-sound="muteImg" id="muteImg" class="sound">
+            <input id="volumeBar" type="range" min="0" max="1" step="0.01" value="0.5">
+          </div>
+
+          <!--播放器本體-->
+          <audio id="player" src="mp3/‪02 紅魔 「Un-demystified Fantasy」.mp3"></audio>
+      </div>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script>
+        //var player = document.getElementById("mainPlayer");
+        var playing = false;
+        var totalTime;
+        var nowVolume = player.volume;
+        $("#pause").css("display","none");
+        $("#muteImg").css("display","none");
+        player.volume = 0;
+        $("#volumeBar").css({"background-image":"-webkit-linear-gradient(left , #5599FF 0%,#fff 0px)"});
+
+        
+        //初始化播放器內音樂的總長度，並將值傳給進度條
+            player.addEventListener("durationchange",function(){
+            totalTime =parseInt(player.duration);
+            $("#progress").prop("max",totalTime);
+            console.log($("#progress").attr("max"));
+
+            let m1 = parseInt(totalTime / 600);
+            let m2 = parseInt(totalTime / 60);
+            let s1 = parseInt(totalTime % 60 / 10);
+            let s2 = parseInt(totalTime % 60 % 10);
+            $("#totalTime").text(`${m1}${m2}:${s1}${s2}`);
+        });
+
+　　　　//播放器的timer
+        player.addEventListener("timeupdate",function(){
+            $("#progress").prop("value",player.currentTime);
+        
+            let now = player.currentTime;
+            let m1 = parseInt(now / 600);
+            let m2 = parseInt(now / 60);
+            let s1 = parseInt(now % 60 / 10);
+            let s2 = parseInt(now % 60 % 10);
+            $("#nowTime").text(`${m1}${m2}:${s1}${s2}`);
+            
+            //進度條的變化
+            let persent = now/totalTime*100;
+            let p = parseInt($("#progress").css("width"))/100;
+            let f = persent*p;
+            console.log(f);
+            $("#progress").css({"background-image":`-webkit-linear-gradient(left , #5599FF ${f}px,#fff 0px)`});
+        });
+
+        //音樂播放鍵
+        $("#play").click(function(){
+            player.play();
+            playing = true;
+            $("#play").css("display","none");
+            $("#pause").css("display","inline-block")
+        })
+
+　　　　//音樂暫停鍵
+        $("#pause").click(function(){
+            player.pause();
+            playing = false;
+            $("#play").css("display","inline-block");
+            $("#pause").css("display","none")
+        })
+
+        //調整音量時能立即更動而不用放開滑鼠
+        $("#volumeBar").on('input',function(){
+           $(this).trigger("change");
+        })
+　　　　//音量調節鍵
+        $("#volumeBar").change(function(){
+            player.volume = this.value;
+            let v = this.value *100;
+            $("#volumeBar").css({"background-image":`-webkit-linear-gradient(left , #5599FF ${v}%,#fff 0px)`});
+            if(player.volume == 0){
+                $("#volumeImg").css("display","none");
+                $("#muteImg").css("display","inline-block");
+            }
+            else{
+                $("#volumeImg").css("display","inline-block");
+                $("#muteImg").css("display","none");
+            }
+        });
+
+        //靜音鍵
+        $(".sound").click(function(){
+            let data = $(this).data("sound");
+            switch(data){
+                case "volumeImg":
+                nowVolume = player.volume;
+                player.volume = 0;
+                $("#volumeBar").prop("value",0);
+                $("#volumeBar").css({"background-image":`-webkit-linear-gradient(left , #5599FF ${0}%,#fff 0px)`});
+                $("#volumeImg").css("display","none");
+                $("#muteImg").css("display","inline-block");
+                break;
+                
+                case "muteImg":
+                player.volume = nowVolume;
+                $("#volumeBar").prop("value",nowVolume);
+                $("#volumeBar").css({"background-image":`-webkit-linear-gradient(left , #5599FF ${nowVolume * 100}%,#fff 0px)`});
+                $("#volumeImg").css("display","inline-block");
+                $("#muteImg").css("display","none");
+                break;           
+                }
+        });
+
+        //選擇進度條後立刻發動值的change(否則會出現延遲，造成改值失敗)
+        $("#progress").on('input',function(){
+            player.pause();
+            $(this).trigger("change");
+        })
+        //音樂進度條改變
+        $("#progress").change(function(){
+            player.currentTime = this.value;
+        });
+        //拖動進度條直到放開滑鼠才重新開始播放
+        $("#progress").mouseup(function(){
+            if(playing)
+            player.play();
+        });
+
+    </script>
+  </body>
+</html>
