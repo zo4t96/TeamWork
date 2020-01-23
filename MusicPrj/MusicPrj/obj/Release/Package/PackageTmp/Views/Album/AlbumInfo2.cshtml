@@ -1,0 +1,488 @@
+﻿@model IEnumerable<MusicPrj.tProduct>
+
+@{
+    ViewBag.Title = "AlbumInfo2";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var AlbInfo = ViewBag.AlbInfo;
+
+    var account = "";
+    if (Session["account"] == null || string.IsNullOrWhiteSpace(Session["account"].ToString()))
+    {
+        Response.Redirect("~/Index/");
+    }
+    else
+    {
+        account = Session["account"].ToString();
+    }
+    tProduct tP = new tProduct();
+}
+
+<div class="sidebox">
+    <ul>
+        <li class="side-li-home-img">@Html.ActionLink("首頁", "Index", null, new { @class = "side-li-home-img" })</li>
+        <li class="side-li-serach-img">搜尋</li>
+        <li class="side-li-mymusiclibiary-img">@Html.ActionLink("back", "MyAlbumList", new { account = Session["account"].ToString() }, new { @class = "side-li-home-img" })</li>
+        <li class="side-li-mymusiclibiary-img">@Html.ActionLink("刪除專輯", "DeleteAlbum", new { amid = Session["albumid"].ToString() }, new { @class = "btn btn-danger", onclick = "return confirm('確定要刪除嗎?')" })</li>
+    </ul>
+</div>
+<div class="mainbox">
+    <div class="albumset">
+        <img src="~/CoverFiles/@AlbInfo.fCoverPath" width="320" height="320" /><br />
+        <h2 class="albumtext"><b>@AlbInfo.fAlbumName</b></h2>
+        <h3 class="albumtext">@AlbInfo.fMaker </h3>
+        <h3 class="albumtext">共有@(Model.Count()) 首</h3>
+    </div>
+    <div style="display: inline-block;vertical-align:top;">
+        <div class="container">
+            @foreach (var item in Model)
+            {
+                <h3 class="fold-title" data-soid="@item.fProductID" data-start="@Html.DisplayFor(modelItem => item.fPlayStart)" data-end="@Html.DisplayFor(modelItem => item.fPlayEnd)" data-playurl="@(Url.Content("~/MusicFiles/") + Html.DisplayFor(modelItem => item.fFilePath))"><i class="fa fa-chevron-right"></i> @Html.DisplayFor(modelItem => item.fProductName)更新試聽時間</h3>
+                <div class="fold">
+
+                    <div class="fold-container">
+                        <div class="container">
+                            <div class="container playerPanel">
+
+                                <hr>
+                                <h5>原始檔案</h5>
+                                <p>設定按鍵擷取原始檔案的當下時間，即可改變試聽檔案的試聽範圍</p>
+                                <div class="py-2 originalPanel">
+
+                                    <audio class="originalAudio"></audio>
+                                    <span class="nowTime">00:00</span>
+                                    <input type="range" class="originalSlider" min="0" max="100" step="0.01" value="0">
+                                    <span class="totalTime">00:00</span>
+                                    <div class="vbtn oplay" data-><img src="~/Content/play.png"></div>
+                                    <div class="vbtn opause"><img src="~/Content/pause.png"></div>
+                                </div>
+
+                                <button type="button" class="btn btn-primary setStart">設定開頭時間</button>
+                                <input type="text" class="start" value="00:00.00" disabled="false">
+                                <br>
+                                <button type="button" class="btn btn-primary setEnd">設定結束時間</button>
+                                <input type="text" class="end" value="00:00.00" disabled="false">
+                                <p>也可以直接拉動滑條直接選取試聽範圍</p>
+                                <div id="slider-range" class="slider"></div>
+
+                                <h5>試聽檔案</h5>
+                                <p>在此確認擷取的範圍</p>
+                                <div class="py-2 demoPanel">
+                                    <audio class="demoAudio"></audio>
+                                    <span class="nowDemo">00:00</span>
+                                    <input type="range" class="demoSlider" min="0" max="100" step="0.01" value="0">
+                                    <span class="totalDemo">00:00</span>
+                                    <div class="vbtn dplay"><img src="~/Content/play.png"></div>
+                                    <div class="vbtn dpause"><img src="~/Content/pause.png"></div>
+                                </div>
+                                <hr>
+                            </div>
+
+                            @Html.ActionLink("刪除", "DelteSong", new { amid = item.fProductID }, new { @class = "btn btn-danger", onclick = "return confirm('確定要刪除嗎?')" })
+                            @Html.ActionLink("編輯", "EditSong", new { amid = item.fProductID }, new { @class = "btn btn-info", onclick = "return confirm('確定要編輯嗎?')" })
+                            @*@Html.ActionLink("更新試聽時間", " updateSongTryLimit2", new { amid = item.fProductID,start = item.fProductID }, new { @class = "btn btn-danger" })*@
+                        </div>
+                    </div>
+                </div>
+            }
+
+            <h3 class="fold-title" data-start="0" data-end="0"><i class="fa fa-chevron-right"></i> 單曲上傳</h3>
+            <div class="fold">
+                <div class="fold-container">
+                    <div class="container">
+                        @using (Html.BeginForm("AlbumInfo", "Album", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                        {
+                            @Html.AntiForgeryToken()
+
+                            <div class="form-horizontal">
+                                <h4>tAlbum</h4>
+                                <hr />
+                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                                <div class="form-group">
+                                    @Html.LabelFor(model => tP.fProductName, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                        @Html.EditorFor(model => tP.fProductName, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => tP.fProductName, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(model => tP.fArtist, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                        @Html.EditorFor(model => tP.fArtist, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => tP.fArtist, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(model => tP.fComposer, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                        @Html.EditorFor(model => tP.fComposer, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => tP.fComposer, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(model => tP.fArranger, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                        @Html.EditorFor(model => tP.fArranger, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => tP.fArranger, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(model => tP.fLyricist, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                        @Html.EditorFor(model => tP.fLyricist, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => tP.fLyricist, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(model => tP.fSIPrice, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                        @Html.EditorFor(model => tP.fSIPrice, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => tP.fSIPrice, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(model => tP.fFilePath, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+
+
+                                        <div class="container playerPanel">
+                                            <input type="file" id="upload" name="tP.fRealFile" />
+                                            <hr>
+                                            <h5>原始檔案</h5>
+                                            <p>設定按鍵擷取原始檔案的當下時間，即可改變試聽檔案的試聽範圍</p>
+                                            <div class="py-2 originalPanel">
+
+                                                <audio class="originalAudio"></audio>
+                                                <span class="nowTime">00:00</span>
+                                                <input type="range" class="originalSlider" min="0" max="100" step="0.01" value="0">
+                                                <span class="totalTime">00:00</span>
+                                                <div class="vbtn oplay" data-><img src="~/Content/play.png"></div>
+                                                <div class="vbtn opause"><img src="~/Content/pause.png"></div>
+                                            </div>
+
+                                            <button type="button" class="btn btn-primary setStart">設定開頭時間</button>
+                                            <input type="text" name="tP.fPlays" class="start" value="00:00.00" disabled="false">
+                                            <br>
+                                            <button type="button" class="btn btn-primary setEnd">設定結束時間</button>
+                                            <input type="text" name="tP.fPlaye" class="end" value="00:00.00" disabled="false">
+                                            <p>也可以直接拉動滑條直接選取試聽範圍</p>
+                                            <div id="slider-range" class="slider"></div>
+
+                                            <h5>試聽檔案</h5>
+                                            <p>在此確認擷取的範圍</p>
+                                            <div class="py-2 demoPanel">
+                                                <audio class="demoAudio"></audio>
+                                                <span class="nowDemo">00:00</span>
+                                                <input type="range" class="demoSlider" min="0" max="100" step="0.01" value="0">
+                                                <span class="totalDemo">00:00</span>
+                                                <div class="vbtn dplay"><img src="~/Content/play.png"></div>
+                                                <div class="vbtn dpause"><img src="~/Content/pause.png"></div>
+                                            </div>
+                                            <hr>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(model => tP.fNation, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                        @Html.EditorFor(model => tP.fNation, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => tP.fNation, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(model => tP.fKind, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                        @Html.EditorFor(model => tP.fKind, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => tP.fKind, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-md-offset-2 col-md-10">
+                                        <input type="submit" value="Create" class="btn btn-default" />
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        @*for end*@
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+
+        //撥放器開始
+        //這兩個是最終會存回資料庫的試聽開頭與結尾的秒數，浮點數類型
+        var demoStart;
+        var demoEnd;
+
+        //新增
+        var m_soid;
+        var oplaying = false;
+        var dplaying = false;
+        var fileName;
+
+        $(".opause").css("display", "none");
+        $(".dpause").css("display", "none");
+        var music = $(".originalAudio")[0];
+        music.volume = 0.6;
+        var demoMusic = $(".demoAudio")[0];
+        demoMusic.volume = 0.6;
+
+        //讀取檔案，一次只能讀取一個
+        $("#upload").on("change", function () {
+            let file = document.getElementById("upload").files[0];
+            if (file.type != "audio/mp3") {
+                file = null;
+            }
+
+            let reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = function (e) {
+                music.src = e.target.result;
+                demoMusic.src = e.target.result;
+            }
+        });
+
+        //讀取音樂時會進行初始化
+        $(".originalAudio").on("durationchange", function () {
+            let totalTime = parseInt(music.duration);
+            let demoTotal = demoEnd - demoStart;
+            console.log(demoTotal);
+            console.log(totalTime);
+            $(".originalSlider").prop("max", totalTime);
+            //       $(".demoSlider").prop("max",totalTime);
+            $(".demoSlider").prop("max", demoTotal);
+            $(".totalTime").text(getTimeText(totalTime));
+            //         $(".totalDemo").text(getTimeText(totalTime));
+            $(".totalDemo").text(getTimeText(demoTotal));
+
+            //同時初始化滑動條
+            $("#slider-range").slider({
+                range: true,
+                min: 0,
+                max: `${music.duration}`,
+                step: 0.01,
+                values: [0, music.duration],
+                slide: function () {
+                    demoStart = $("#slider-range").slider("values", 0)
+                    setStart();
+                    demoEnd = $("#slider-range").slider("values", 1)
+                    setEnd();
+                }
+            });
+            console.log(demoStart);
+            console.log(demoEnd);
+            $(".start").val(demoStart);
+            $(".end").val(demoEnd);
+            setStart();
+            setEnd();
+        });
+
+        //播放器的timer
+        $(".originalAudio").on("timeupdate", function () {
+            $(".originalSlider").prop("value", music.currentTime);
+            let now = parseInt(music.currentTime);
+            $(".nowTime").text(getTimeText(now));
+        });
+        $(".demoAudio").on("timeupdate", function () {
+            $(".demoSlider").prop("value", demoMusic.currentTime);
+            let now = parseInt(demoMusic.currentTime);
+            $(".nowDemo").text(getTimeText(now));
+            if (demoMusic.currentTime > $(".demoSlider").attr("max")) {
+                demoMusic.pause();
+                dplaying = false;
+                $(".dplay").css("display", "inline");
+                $(".dpause").css("display", "none")
+                demoMusic.currentTime = demoStart;
+            }
+            //試聽淡入效果(因為設定上淡入三秒淡出四秒，所以要是試聽時間在七秒內會出現音量bug)
+            if (demoMusic.currentTime < demoStart + 3) {
+                demoMusic.volume = (demoMusic.currentTime - demoStart) * 0.2;
+            }
+            //試聽淡出效果
+            else if (demoMusic.currentTime + 4 > demoEnd) {
+                demoMusic.volume = (demoEnd - demoMusic.currentTime) * 0.1;
+            }
+            else {
+                demoMusic.volume = 0.6;
+            }
+        });
+
+        //音樂播放暫停鍵
+        $(".vbtn").on("click", function () {
+            console.log($(this).prop("class"));
+            if ($(this).prop("className") == "vbtn oplay") {
+                music.play();
+                demoMusic.pause();
+                oplaying = true;
+                dplaying = false;
+                $(".oplay").css("display", "none");
+                $(".opause").css("display", "inline")
+                $(".dplay").css("display", "inline")
+                $(".dpause").css("display", "none")
+            }
+            else if ($(this).prop("class") == "vbtn dplay") {
+                demoMusic.play();
+                music.pause();
+                dplaying = true;
+                oplaying = false;
+                $(".dplay").css("display", "none");
+                $(".dpause").css("display", "inline")
+                $(".oplay").css("display", "inline");
+                $(".opause").css("display", "none")
+            }
+            else if ($(this).prop("class") == "vbtn opause") {
+                music.pause();
+                oplaying = false;
+                $(".oplay").css("display", "inline");
+                $(".opause").css("display", "none")
+            }
+            else if ($(this).prop("class") == "vbtn dpause") {
+                demoMusic.pause();
+                dplaying = false;
+                $(".dplay").css("display", "inline");
+                $(".dpause").css("display", "none")
+            }
+        })
+
+        //選擇進度條後立刻發動值的change(否則會出現延遲，造成改值失敗)
+        $(".originalSlider").on('input', function () {
+            music.pause();
+            $(this).trigger("change");
+        })
+        $(".demoSlider").on('input', function () {
+            demoMusic.pause();
+            $(this).trigger("change");
+        })
+        //音樂進度條改變
+        $(".originalSlider").on("change", function () {
+            music.currentTime = this.value;
+        });
+        $(".demoSlider").on("change", function () {
+            demoMusic.currentTime = this.value;
+        });
+        //拖動進度條直到放開滑鼠才重新開始播放
+        $(".originalSlider").on("mouseup", function () {
+            if (oplaying)
+                music.play();
+        });
+        $(".demoSlider").on("mouseup", function () {
+            if (dplaying)
+                demoMusic.play();
+        });
+
+        //製作試聽用
+        //按鍵設置試聽開頭與結尾
+        $(".setStart").on("click", function () {
+            demoStart = music.currentTime;
+            setStart();
+        });
+        $(".setEnd").on("click", function () {
+            demoEnd = music.currentTime;
+            setEnd();
+        });
+
+        //取得音樂時間文字的方法(第二個有給到小數後兩位)
+        function getTimeText(num) {
+            let m1 = parseInt(num / 600);
+            let m2 = parseInt(num / 60 % 10);
+            let s1 = parseInt(num % 60 / 10);
+            let s2 = parseInt(num % 60 % 10);
+            return `${m1}${m2}:${s1}${s2}`;
+        }
+        function getTimeText2(num) {
+            let m1 = parseInt(num / 600);
+            let m2 = parseInt(num / 60 % 10);
+            let s1 = parseInt(num % 60 / 10);
+            let s2 = (num % 60 % 10).toFixed(2);
+            return `${m1}${m2}:${s1}${s2}`;
+        }
+
+        //設定範圍初始值與結尾值的方法
+        function setStart() {
+            $(".start").val(demoStart);
+            if (demoStart > demoMusic.currentTime) {
+                demoMusic.currentTime = demoStart;
+                $(".demoSlider").attr("value", `${demoStart}`);
+            }
+            $(".demoSlider").attr("min", `${demoStart}`);
+
+        }
+        function setEnd() {
+            $(".end").val(demoEnd);
+            $(".totalDemo").text(getTimeText(demoEnd));
+            if (demoEnd < demoMusic.currentTime) {
+                demoMusic.currentTime = demoEnd;
+                $(".demoSlider").attr("value", `${demoEnd}`);
+            }
+            $(".demoSlider").attr("max", `${demoEnd}`);
+        }
+
+
+        //撥放器結束
+        //摺疊樣式開始
+        $(function () {
+            $('h3').click(function () {
+                if ($(this).next('.fold').hasClass('o') == true) {
+                    $(this).find('i.fa').removeClass('fa-chevron-down').addClass('fa-chevron-right');
+                    $(this).next('.fold').removeClass('o').slideUp();
+                }
+                else {
+                    $('h3').find('i.fa').removeClass('fa-chevron-down').addClass('fa-chevron-right');
+                    $('h3').next('.fold').removeClass('o').slideUp();
+                    music.src = $(this).data('playurl');
+                    demoMusic.src = $(this).data('playurl');
+                    //                    demoStart = $(".start").val();
+                    //                    demoEnd = $(".end").val();
+                    demoStart = $(this).data('start');
+                    demoEnd = $(this).data('end');
+                    m_soid = $(this).data('soid');
+                    $(this).find('i.fa').removeClass('fa-chevron-right').addClass('fa-chevron-down');
+                    $(this).next('.fold').addClass('o').slideDown();
+                }
+            });
+        });
+        //摺疊樣式結束
+
+           $(function () {
+           $('#updatetime').click(function () {
+               console.log(demoStart);
+                                       console.log($(this).data('start'));
+               $(this).closest('.fold-title').data('end', demoEnd);
+               $(this).parents('.fold-title').data('start', '123');
+               console.log($(this).parents('.fold-title').data('start'));
+
+            $.ajax({
+                type: "Post",
+                url: `./updateSongTryLimit?amid=${m_soid}&start=${demoStart}&end=${demoEnd}`,
+                data: '{}',
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                async: false,
+                success: function (data) {
+                    //                      var jo = JSON.parse(data);
+                    //                        alert("123");
+
+                },
+                failure: function (errMsg) {
+                    //                       alert("fail");
+                }
+            })
+                                location.href = "./AlbumInfo?amid="+@Session["albumid"].ToString();
+
+                               });
+                });
+
+</script>
