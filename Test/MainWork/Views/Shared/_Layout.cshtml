@@ -16,10 +16,11 @@
             padding: 0;
             font-family: "微軟正黑體";
             color: white;
-            font-weight: 700;
-            font-size: 20px;
         }
-
+        li{
+            list-style-type:none;
+            margin:5px;
+        }
         .header {
             position: fixed;
             width: 100%;
@@ -82,11 +83,12 @@
         .mainbox {
             width: 100%;
             height: calc(100%-70px);
-            min-height: 1220px;
+            min-height: 600px;
             border-left: 200px solid #040404; /*設置右邊框寬度為XXXpx像素，同等於sidebox的寬度*/
-            background-color: #696969;
-            margin-bottom:120px;
+            background-color: #2b2828;
+            margin-bottom: 110px;
         }
+
         #footer {
             position: fixed;
             bottom: 0;
@@ -95,21 +97,18 @@
             background-color: #474747;
             color: white;
         }
+        .menuBtn{
+
+        }
     </style>
 
     <!--播放器style-->
     <style>
-        * {
-            font-family: '微軟正黑體';
-            color: whitesmoke;
-            font-weight: 500;
-        }
-
         #playerPanel {
             position: relative;
             width: 100%;
             min-width: 1200px;
-            height: 120px;
+            height: 110px;
             background: #3c3d41;
         }
 
@@ -117,26 +116,26 @@
             position: absolute;
             left: 100px;
             width: 200px;
-            height: 100px;
+            height: 80px;
             margin: 10px;
             background: none;
         }
 
         img.title {
-            width: 90px;
-            height: 90px;
-            margin: 5px 5px 0px 5px;
+            width: 80px;
+            height: 80px;
+            margin: 2px 10px;
         }
 
         figure {
             position: absolute;
             width: 100px;
-            margin: 5px;
+            margin: 2px;
             color: white;
         }
 
         figcaption {
-            margin: 2px;
+            margin: 1px;
             text-align: center;
         }
 
@@ -153,8 +152,8 @@
 
         #btnPanel {
             position: relative;
-            top: 10px;
-            width: 40%;
+            top: 3px;
+            width: 400px;
             margin: auto;
             text-align: center;
             background: #3c3d41;
@@ -162,8 +161,8 @@
 
         #progressPanel {
             position: relative;
-            width: 60%;
-            margin: 20px auto;
+            width: 55%;
+            margin: 5px auto;
             text-align: center;
             background: #3c3d41;
         }
@@ -171,7 +170,7 @@
         #volumePanel {
             position: absolute;
             right: 0px;
-            top: 50px;
+            top: 40px;
             background: #3c3d41;
             width: 160px;
         }
@@ -260,13 +259,15 @@
     <div id="container">
         <div class="sidebox">
             <ul>
-                <li class="side-li-home-img">首頁</li>
-                <li class="side-li-serach-img"><button id="search">搜尋</button></li>
+                <li class="side-li-home-img"><a href="/Homepage/Main">首頁</a></li>
+                <li class="side-li-serach-img"><a href="/BasicSerch/BasicSerch">搜尋</a></li>
                 <li class="side-li-mymusiclibiary-img">你的音樂庫</li>
+                <li class="side-li-twoPlayer"><a href="/TwoPlayer/demoPlayer">雙重播放器測試</a></li>
             </ul>
         </div>
 
         <div class="mainbox">
+
             @RenderBody()
         </div>
 
@@ -277,12 +278,12 @@
 
             <!-- 封面與歌名div -->
             <figure>
-                <img src="/images/1024px-奉封面.jpg" class="title">
-                <figcaption class="Description title">奉</figcaption>
+                <img src="#" class="title">
+                <figcaption class="Description title">這裡放專輯名</figcaption>
             </figure>
             <div id="titlePanel">
-                <span class="Description">‪12 「テーマ・オブ・カーテンファイアーシューターズ」 -History 3-3-</span><br>
-                <span id="singer">めらみぽっぷ</span>
+                <span class="Description">這裡放歌名</span><br>
+                <span id="singer">這裡放歌手</span>
             </div>
 
 
@@ -316,148 +317,175 @@
     </div>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script>
-        var player = document.getElementById("mainPlayer");
-        var playing = false;
+        var player;
+        var playing;
         var totalTime;
-        var nowVolume = player.volume;
-        $("#pause").css("display", "none");
-        $("#muteImg").css("display", "none");
-        player.volume = 0;
-        $("#volumeBar").css({ "background-image": "-webkit-linear-gradient(left , #5599FF 50%,#fff 0px)" });
+        var nowVolume;
 
-
-        //初始化播放器內音樂的總長度，並將值傳給進度條
-        player.addEventListener("durationchange", function () {
-            totalTime = parseInt(player.duration);
-            $("#progress").prop("max", totalTime);
-            console.log($("#progress").attr("max"));
-
-            let m1 = parseInt(totalTime / 600);
-            let m2 = parseInt(totalTime / 60);
-            let s1 = parseInt(totalTime % 60 / 10);
-            let s2 = parseInt(totalTime % 60 % 10);
-            $("#totalTime").text(`${m1}${m2}:${s1}${s2}`);
-        });
-
-        //播放器的timer
-        player.addEventListener("timeupdate", function () {
-            $("#progress").prop("value", player.currentTime);
-
-            let now = player.currentTime;
-            let m1 = parseInt(now / 600);
-            let m2 = parseInt(now / 60);
-            let s1 = parseInt(now % 60 / 10);
-            let s2 = parseInt(now % 60 % 10);
-            $("#nowTime").text(`${m1}${m2}:${s1}${s2}`);
-
-            //進度條的變化
-            let persent = now / totalTime * 100;
-            let p = parseInt($("#progress").css("width")) / 100;
-            let f = persent * p;
-            console.log(f);
-            $("#progress").css({ "background-image": `-webkit-linear-gradient(left , #5599FF ${f}px,#fff 0px)` });
-        });
-
-        //音樂播放鍵
-        $("#play").click(function () {
-            player.play();
-            playing = true;
-            $("#play").css("display", "none");
-            $("#pause").css("display", "inline-block")
-        })
-
-        //音樂暫停鍵
-        $("#pause").click(function () {
-            player.pause();
+        //避免頁面刷新時既有變數被重置或重複給予事件
+        if (player == null) {
+            player = document.getElementById("mainPlayer");
             playing = false;
-            $("#play").css("display", "inline-block");
-            $("#pause").css("display", "none")
-        })
+            $("#pause").css("display", "none");
+            $("#muteImg").css("display", "none");
+            player.volume = 0.5;
+            $("#volumeBar").css({ "background-image": "-webkit-linear-gradient(left , #5599FF 50%,#fff 0px)" });
 
-        //調整音量時能立即更動而不用放開滑鼠
-        $("#volumeBar").on('input', function () {
-            $(this).trigger("change");
-        })
-        //音量調節鍵
-        $("#volumeBar").change(function () {
-            player.volume = this.value;
-            let v = this.value * 100;
-            $("#volumeBar").css({ "background-image": `-webkit-linear-gradient(left , #5599FF ${v}%,#fff 0px)` });
-            if (player.volume == 0) {
-                $("#volumeImg").css("display", "none");
-                $("#muteImg").css("display", "inline-block");
-            }
-            else {
-                $("#volumeImg").css("display", "inline-block");
-                $("#muteImg").css("display", "none");
-            }
-        });
+            nowVolume = player.volume;
 
-        //靜音鍵
-        $(".sound").click(function () {
-            let data = $(this).data("sound");
-            switch (data) {
-                case "volumeImg":
-                    nowVolume = player.volume;
-                    player.volume = 0;
-                    $("#volumeBar").prop("value", 0);
-                    $("#volumeBar").css({ "background-image": `-webkit-linear-gradient(left , #5599FF ${0}%,#fff 0px)` });
+            //初始化播放器內音樂的總長度，並將值傳給進度條
+            player.addEventListener("durationchange", function () {
+                totalTime = parseInt(player.duration);
+                $("#progress").prop("max", totalTime);
+                console.log($("#progress").attr("max"));
+
+                let m1 = parseInt(totalTime / 600);
+                let m2 = parseInt(totalTime / 60);
+                let s1 = parseInt(totalTime % 60 / 10);
+                let s2 = parseInt(totalTime % 60 % 10);
+                $("#totalTime").text(`${m1}${m2}:${s1}${s2}`);
+            });
+
+            //播放器的timer
+            player.addEventListener("timeupdate", function () {
+                $("#progress").prop("value", player.currentTime);
+
+                let now = player.currentTime;
+                let m1 = parseInt(now / 600);
+                let m2 = parseInt(now / 60);
+                let s1 = parseInt(now % 60 / 10);
+                let s2 = parseInt(now % 60 % 10);
+                $("#nowTime").text(`${m1}${m2}:${s1}${s2}`);
+
+                //進度條的變化
+                let persent = now / totalTime * 100;
+                let p = parseInt($("#progress").css("width")) / 100;
+                let f = persent * p;
+                $("#progress").css({ "background-image": `-webkit-linear-gradient(left , #5599FF ${f}px,#fff 0px)` });
+            });
+
+            //音樂播放鍵
+            $("#play").click(function () {
+                player.play();
+                playing = true;
+                $("#play").css("display", "none");
+                $("#pause").css("display", "inline-block")
+            })
+
+            //音樂暫停鍵
+            $("#pause").click(function () {
+                player.pause();
+                playing = false;
+                $("#play").css("display", "inline-block");
+                $("#pause").css("display", "none")
+            })
+
+            //調整音量時能立即更動而不用放開滑鼠
+            $("#volumeBar").on('input', function () {
+                $(this).trigger("change");
+            })
+            //音量調節鍵
+            $("#volumeBar").on('change', function () {
+                player.volume = this.value;
+                let v = this.value * 100;
+                $("#volumeBar").css({ "background-image": `-webkit-linear-gradient(left , #5599FF ${v}%,#fff 0px)` });
+                if (player.volume == 0) {
                     $("#volumeImg").css("display", "none");
                     $("#muteImg").css("display", "inline-block");
-                    break;
-
-                case "muteImg":
-                    player.volume = nowVolume;
-                    $("#volumeBar").prop("value", nowVolume);
-                    $("#volumeBar").css({ "background-image": `-webkit-linear-gradient(left , #5599FF ${nowVolume * 100}%,#fff 0px)` });
+                }
+                else {
                     $("#volumeImg").css("display", "inline-block");
                     $("#muteImg").css("display", "none");
-                    break;
-            }
-        });
+                }
+            });
 
-        //選擇進度條後立刻發動值的change(否則會出現延遲，造成改值失敗)
-        $("#progress").on('input', function () {
-            player.pause();
-            $(this).trigger("change");
-        })
-        //音樂進度條改變
-        $("#progress").change(function () {
-            player.currentTime = this.value;
-        });
-        //拖動進度條直到放開滑鼠才重新開始播放
-        $("#progress").mouseup(function () {
-            if (playing)
-                player.play();
-        });
+            //靜音鍵
+            $(".sound").click(function () {
+                let data = $(this).data("sound");
+                switch (data) {
+                    case "volumeImg":
+                        nowVolume = player.volume;
+                        player.volume = 0;
+                        $("#volumeBar").prop("value", 0);
+                        $("#volumeBar").css({ "background-image": `-webkit-linear-gradient(left , #5599FF ${0}%,#fff 0px)` });
+                        $("#volumeImg").css("display", "none");
+                        $("#muteImg").css("display", "inline-block");
+                        break;
 
+                    case "muteImg":
+                        player.volume = nowVolume;
+                        $("#volumeBar").prop("value", nowVolume);
+                        $("#volumeBar").css({ "background-image": `-webkit-linear-gradient(left , #5599FF ${nowVolume * 100}%,#fff 0px)` });
+                        $("#volumeImg").css("display", "inline-block");
+                        $("#muteImg").css("display", "none");
+                        break;
+                }
+            });
 
-
-        
-        //點連結產生ajax的實作，這個的內容會根據連結的不同有所改變
-        $("#search").click(function () {   
-            var link = "https://localhost:44342/BasicSerch/BasicSerch";
-            //給予虛擬網址，隨便打都能過，但是最好不要！此處
-            history.pushState("", "", link);
-            changePage(link);
-        });
-
-        function changePage(link) {
-            //$(".mainbox").load(link);
-            //上下兩者都是ajax，目前產生結果會相同，尚不了解箇中差異
-            //下面的data是ajax方法發動後從對定應的action裡取得的html語法，必須事先寫好
-            $.get(link, function (data) {
-                $(".mainbox").html(data);
+            //選擇進度條後立刻發動值的change(否則會出現延遲，造成改值失敗)
+            $("#progress").on('input', function () {
+                player.pause();
+                $(this).trigger("change");
             })
+            //音樂進度條改變
+            $("#progress").change(function () {
+                player.currentTime = this.value;
+            });
+            //拖動進度條直到放開滑鼠才重新開始播放
+            $("#progress").mouseup(function () {
+                if (playing)
+                    player.play();
+            });
+
+
+            ///////////////////
+            ///以下為ajax應用///
+            ///////////////////
+
+
+            //為了使用ajax所寫的自定義方法
+            function changePage(link) {
+                //$(".mainbox").load(link);
+                //上下兩者都是ajax，目前產生結果會相同，尚不了解箇中差異
+                //link參數為url字串
+                //下面的data是ajax方法發動後從對定應的action裡取得的html語法，必須事先寫好
+                $.get(link, function (data) {
+                    $(".mainbox").html(data);
+                })
+            }
+
+            //點連結將主容器切換到新頁面，這個的內容會根據連結的不同有所改變
+            $("a").on("click", function (e) {
+                let link = $(this).attr("href");
+                changePage(link);
+                //給予網頁虛擬網址，隨便打都能過，但是最好讓他跟實際變換的網址同名
+                history.pushState(null, null, link);
+                //因為要將網頁連結變成自定義的切換模式，所以記得取消原本a標籤的超連結功能
+                e.preventDefault();
+            });
+            //每當點選瀏覽器的上一頁下一頁便會發動此事件
+            //location.pathname為動作完成後所得到的該頁url
+            window.addEventListener('popstate', function (e) {
+                changePage(location.pathname);
+            })
+
+            window.onbeforeunload = function () {
+                return alert("我發動了");
+            }
         }
 
-        //每當點選瀏覽器的上一頁下一頁便會發動此事件
-        window.addEventListener('popstate', function () {
-            changePage(location.pathname);
+        //先讀取主頁面(全商品頁面)並填入母版的主容器
+        //因為每次按上下一頁都要讀取，所以不放入前面的if判斷式中
+        $.get("Homepage/Main", function (data) {
+            $(".mainbox").html(data);
         })
     </script>
 </body>

@@ -157,6 +157,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\BasicSerchController.cs" />
     <Compile Include="Controllers\HomepageController.cs" />
+    <Compile Include="Controllers\TwoPlayerController.cs" />
     <Compile Include="Controllers\UploadTestController.cs" />
     <Compile Include="dbTestMusic.Context.cs">
       <AutoGen>True</AutoGen>
@@ -235,7 +236,8 @@
     <Content Include="Views\BasicSerch\BasicSerch.cshtml" />
     <Content Include="Views\Homepage\homepage.cshtml" />
     <Content Include="Views\Homepage\BasicSerch.cshtml" />
-    <Content Include="Views\Homepage\BasicSerchPartial.cshtml" />
+    <Content Include="Views\Homepage\Main.cshtml" />
+    <Content Include="Views\TwoPlayer\demoPlayer.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -14,7 +14,7 @@ namespace MainWork
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
             routes.MapRoute(
-                name: "MyMusic",
+                name: "Default",
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Homepage", action = "homepage", id = UrlParameter.Optional }
             );
