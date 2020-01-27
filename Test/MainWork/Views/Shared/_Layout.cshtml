@@ -266,7 +266,7 @@
             </ul>
         </div>
 
-        <div class="mainbox">
+        <div class="mainbox" data-first="@ViewBag.ajax">
 
             @RenderBody()
         </div>
@@ -306,8 +306,8 @@
 
             <!-- 音量條div -->
             <div id="volumePanel">
-                <img src="PlayerImg/sound.png" data-sound="volumeImg" id="volumeImg" class="sound">
-                <img src="PlayerImg/mute.png" data-sound="muteImg" id="muteImg" class="sound">
+                <img src="/PlayerImg/sound.png" data-sound="volumeImg" id="volumeImg" class="sound">
+                <img src="/PlayerImg/mute.png" data-sound="muteImg" id="muteImg" class="sound">
                 <input id="volumeBar" type="range" min="0" max="1" step="0.01" value="0.5">
             </div>
 
@@ -453,11 +453,20 @@
 
             //為了使用ajax所寫的自定義方法
             function changePage(link) {
+
                 //$(".mainbox").load(link);
+
                 //上下兩者都是ajax，目前產生結果會相同，尚不了解箇中差異
                 //link參數為url字串
+
                 //下面的data是ajax方法發動後從對定應的action裡取得的html語法，必須事先寫好
-                $.get(link, function (data) {
+                //$.get(link, function (data) {
+                //    $(".mainbox").html(data);
+                //})
+
+                //如果有上傳參數到後端則使用$.post的ajax方法
+                //不過為了配合重新整理頁面不跑掉的系統，暫時是一律使用$.post來處理所有ajax
+                $.post(link, {ajax:true}, function (data) {
                     $(".mainbox").html(data);
                 })
             }
@@ -471,22 +480,21 @@
                 //因為要將網頁連結變成自定義的切換模式，所以記得取消原本a標籤的超連結功能
                 e.preventDefault();
             });
+
             //每當點選瀏覽器的上一頁下一頁便會發動此事件
             //location.pathname為動作完成後所得到的該頁url
             window.addEventListener('popstate', function (e) {
                 changePage(location.pathname);
             })
 
-            window.onbeforeunload = function () {
-                return alert("我發動了");
-            }
+            //先讀取主頁面(全商品頁面)並填入母版的主容器
+            //為了讓初始網址永遠統一為這個才寫的，其實也可以刪掉
+            $.post("/Homepage/Main", { ajax: true }, function (data) {
+                history.replaceState(null, null, "/Homepage/Main");
+                $(".mainbox").html(data);
+            })
         }
-
-        //先讀取主頁面(全商品頁面)並填入母版的主容器
-        //因為每次按上下一頁都要讀取，所以不放入前面的if判斷式中
-        $.get("Homepage/Main", function (data) {
-            $(".mainbox").html(data);
-        })
+        
     </script>
 </body>
 </html>

@@ -1,6 +1,16 @@
 ﻿@model IEnumerable<MainWork.tAlbumType>
 @{
-    Layout = null;
+    //如果是ajax讀取出這頁，取消讀取框架只讀內容
+    if (ViewBag.ajax != null)
+    {
+        @(Layout = null);
+    }
+    //如果是按重新整理就必須讀取框架，並且將下列這些參考讀出來(否則會抓不到javascript)
+    //由於讀取layout理應也會讀取參照的script，此處有待考察
+    else
+    {
+        <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    }
 }
 <style>
     .typePage {
@@ -41,7 +51,7 @@
             min-width: 165px;
             min-height: 165px;
             margin: 2px;
-        }    
+        }
 
     .photo {
         position: relative;
@@ -60,7 +70,7 @@
 <title>BasicSerch</title>
 <body>
     <h2>所有類型</h2>
-    <div class="typePage" ">
+    <div class="typePage">
         @{string[] color = new string[] { "#FF8789", "#C158E8", "#6E7AFF", "#58D5E8", "#A6FFB4", "#C7E874", "#FFE98B", "#E8B274", "#F587DE", }; }
         @foreach (var item in Model)
         {

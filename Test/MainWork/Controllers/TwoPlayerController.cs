@@ -13,5 +13,15 @@ namespace MainWork.Controllers
         {
             return View();
         }
+
+        [HttpPost]
+        public ActionResult demoPlayer(bool ajax)
+        {
+            if (ajax)
+            {
+                ViewBag.ajax = true;
+            }
+            return View();
+        }
     }
 }

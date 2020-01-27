@@ -15,5 +15,17 @@ namespace MainWork.Controllers
             var at = db.tAlbumTypes.Select(p => p);
             return View(at);
         }
+
+        [HttpPost]
+        public ActionResult BasicSerch(bool ajax)
+        {
+            dbProjectMusicStoreEntities db = new dbProjectMusicStoreEntities();
+            var at = db.tAlbumTypes.Select(p => p);
+            if (ajax)
+            {
+                ViewBag.ajax = true;
+            }
+            return View(at);
+        }
     }
 }
