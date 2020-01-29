@@ -1,4 +1,12 @@
-﻿<!doctype html>
+﻿@using MainWork.Models
+@{ 
+    //將初始化物件丟進Viewbag後扔過來，在這邊再轉型成原本的物件
+    //這樣可以不必佔用return View()內的參數欄位，轉型後也因為變回強型別而可以輕鬆選擇屬性
+    //當然，要記得using命名空間
+    CWebInitailize webInitial = ViewBag.InitialModel;
+}
+
+<!doctype html>
 <html lang="en">
 <head>
     <title>Title</title>
@@ -8,6 +16,9 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    @* ↓主要用來讀取一些特殊icon *@
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
     <!--原始style-->
     <style>
@@ -17,10 +28,12 @@
             font-family: "微軟正黑體";
             color: white;
         }
-        li{
-            list-style-type:none;
-            margin:5px;
+
+        li {
+            list-style-type: none;
+            margin: 5px;
         }
+
         .header {
             position: fixed;
             width: 100%;
@@ -97,8 +110,74 @@
             background-color: #474747;
             color: white;
         }
-        .menuBtn{
 
+        /*額外添加:搜尋條.選單按鍵*/
+        .searchBar {
+            position: relative;
+            left: 250px;
+            margin: 15px;
+            width: 25%;
+            min-width: 200px;
+        }
+
+        .advancedPanel {
+            display: none;
+            width: 600px;
+            border-radius: 10px;
+            padding: 5px 20px;
+            background-color: #040404;
+            background-image: linear-gradient(#474747,#040404);
+            opacity: 0;
+            transition: 0.1s;
+            box-shadow: 1px 1px 2px #818181;
+        }
+
+        .advancedItem {
+            display: inline-flex;
+            flex-wrap: wrap;
+            width: 140px;
+            margin: 10px;
+        }
+
+        .advancedSelect {
+            margin: 10px;
+        }
+
+        .selectableItem,
+        .selected {
+            display: inline-block;
+            border-radius: 5px;
+            border: 1px solid whitesmoke;
+            padding: 5px;
+            margin: 2px 1px;
+        }
+
+        .typeAdd {
+            padding: 5px 10px;
+        }
+
+        .selectableItem,
+        .selected,
+        .typeAdd {
+            cursor: pointer;
+        }
+
+        .typeAdd:hover {
+            background-color: rgba(6, 78, 137, 0.90)
+        }
+
+        .selectableItemPanel {
+            display: none;
+            position: absolute;
+            width: 90%;
+            min-width: 200px;
+            border-radius:5px;
+            background-color: rgba(0, 0, 0, 0.8);
+            transition: 0.1s;
+        }
+        .adSwitch {
+            opacity: 1;
+            display: block;
         }
     </style>
 
@@ -239,11 +318,10 @@
             width: 30px;
             height: 22.5px;
             margin: 10px;
+            /*下面是色彩反轉的濾鏡效果(把黑圖片變白)*/
             filter: invert();
         }
     </style>
-
-
 </head>
 <body>
     <div class="header">
@@ -251,6 +329,86 @@
             <a href="#"><img src="image/1-mini.jpg" alt=""></a>
             <button class="navbar-toggler header-logo-text" type="button">LOGO</button>
         </div>
+
+        @* 搜尋條--套用bootstrap(input-group) *@
+        <div class="searchBar">
+            @* 基本搜尋條(結合進階搜尋鍵) *@
+            <div class="input-group">
+                <input class="searchtxt form-control" type="text" placeholder="搜尋歌曲..." name="basicSearch">
+                <div class="input-group-append">
+                    <button class="btn btn-outline-secondary advancedBtn">進階搜尋</button>
+                    <button class="btn btn-outline-secondary searchBtn" type="button">
+                        <i class="fa fa-search"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="advancedPanel">
+                @* 這邊放text搜尋欄位 *@
+                <div class="advancedItemGroup">
+                    <div class="advancedItem">
+                        歌曲名稱
+                        <input type="text" class="advancedtxt form-control" name="song" />
+                    </div>
+                    <div class="advancedItem">
+                        歌手
+                        <input type="text" class="advancedtxt form-control" name="singer" />
+                    </div>
+                    <div class="advancedItem">
+                        團體名
+                        <input type="text" class="advancedtxt form-control" name="group" />
+                    </div>
+                    <div class="advancedItem">
+                        作曲者
+                        <input type="text" class="advancedtxt form-control" name="arranger" />
+                    </div>
+                    <div class="advancedItem">
+                        作詞者
+                        <input type="text" class="advancedtxt form-control" name="lyricist" />
+                    </div>
+                    <div class="advancedItem">
+                        發行類別
+                        <select class="advancedtxt form-control" name="compose">
+                            <option>不指定</option>
+                            @*網頁初始化時會讀取資料庫的類別資料*@
+                            @foreach (var item in webInitial.types)
+                            {
+                                <option>@item.fTypeName</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+
+                @* 這邊放自選類別 *@
+                <div class="typeSelectGroup">
+                    @* 選擇想要的類別 *@
+                    <div class="typeSelect advancedSelect">
+                        偏好的曲風
+                        <div class="advancedBlock">
+                            <div class="selected typeAdd" data-selector="like"><i class="fa fa-plus"></i></div>
+                        </div>
+                        @* 點選+號後會出現的type選擇表，位置應在+號正下方 *@
+                        <div class="selectableItemPanel">
+                            @foreach (var item in webInitial.kinds)
+                            {
+                                <div class="selectableItem">@item.KindName</div>
+                            }
+                        </div>
+                    </div>
+
+                    @* 剔除不想要的類別 *@
+                    <div class="typeDislikeSelect advancedSelect">
+                        想剔除的曲風
+                        <div class="advancedBlock">
+                            <div class="selected typeAdd" data-selector="dislike"><i class="fa fa-plus"></i></div>
+                        </div>
+                    </div>
+                </div>
+
+                
+            </div>
+        </div>
+
         <div class="header-button">
             <button type="button">註冊</button>
             <button type="button">登入</button>
@@ -260,12 +418,13 @@
         <div class="sidebox">
             <ul>
                 <li class="side-li-home-img"><a href="/Homepage/Main">首頁</a></li>
-                <li class="side-li-serach-img"><a href="/BasicSerch/BasicSerch">搜尋</a></li>
+                <li class="side-li-serach-img"><a href="/BasicSearch/BasicSearch">音樂分類</a></li>
                 <li class="side-li-mymusiclibiary-img">你的音樂庫</li>
                 <li class="side-li-twoPlayer"><a href="/TwoPlayer/demoPlayer">雙重播放器測試</a></li>
             </ul>
         </div>
 
+        @* 為了讓首頁網址統一所寫的 *@
         <div class="mainbox" data-first="@ViewBag.ajax">
 
             @RenderBody()
@@ -325,10 +484,10 @@
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script>
-        var player;
-        var playing;
-        var totalTime;
-        var nowVolume;
+        var player;//主播放器
+        var playing;//是否正在播放中
+        var totalTime;//本次歌曲的秒數總長度
+        var nowVolume;//當前音量
 
         //避免頁面刷新時既有變數被重置或重複給予事件
         if (player == null) {
@@ -345,7 +504,6 @@
             player.addEventListener("durationchange", function () {
                 totalTime = parseInt(player.duration);
                 $("#progress").prop("max", totalTime);
-                console.log($("#progress").attr("max"));
 
                 let m1 = parseInt(totalTime / 600);
                 let m2 = parseInt(totalTime / 60);
@@ -446,6 +604,21 @@
             });
 
 
+            //搜尋條棒相關
+            $(".advancedBtn").click(function () {
+                $(".advancedPanel").toggleClass("adSwitch");
+            })
+
+            $(".searchBtn").click(function () {
+                console.log("搜尋!");
+            })
+
+            $(".typeAdd").click(function () {
+                $(this).parents("advancedBlock").add($(".selectableItemPanel")[0]);
+                $(".selectableItemPanel").toggleClass("adSwitch");
+
+            })
+
             ///////////////////
             ///以下為ajax應用///
             ///////////////////
@@ -466,7 +639,7 @@
 
                 //如果有上傳參數到後端則使用$.post的ajax方法
                 //不過為了配合重新整理頁面不跑掉的系統，暫時是一律使用$.post來處理所有ajax
-                $.post(link, {ajax:true}, function (data) {
+                $.post(link, { ajax: true }, function (data) {
                     $(".mainbox").html(data);
                 })
             }
@@ -487,14 +660,15 @@
                 changePage(location.pathname);
             })
 
-            //先讀取主頁面(全商品頁面)並填入母版的主容器
-            //為了讓初始網址永遠統一為這個才寫的，其實也可以刪掉
-            $.post("/Homepage/Main", { ajax: true }, function (data) {
-                history.replaceState(null, null, "/Homepage/Main");
-                $(".mainbox").html(data);
-            })
+            ////先讀取主頁面(全商品頁面)並填入母版的主容器
+            ////為了讓初始網址永遠統一為這個才寫的，其實也可以刪掉
+            //$.post("/Homepage/Main", { ajax: true }, function (data) {
+            //    history.replaceState(null, null, "/Homepage/Main");
+            //    $(".mainbox").html(data);
+            //})
+
         }
-        
+
     </script>
 </body>
 </html>

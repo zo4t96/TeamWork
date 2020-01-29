@@ -197,6 +197,7 @@
             let now = parseInt(music.currentTime);
             $(".nowTime").text(getTimeText(now));
         });
+
         $(".demoAudio").on("timeupdate", function () {
             $(".demoSlider").prop("value", demoMusic.currentTime);
             let now = parseInt(demoMusic.currentTime);
@@ -213,7 +214,7 @@
                 demoMusic.volume = (demoMusic.currentTime - demoStart) * 0.2;
             }
             //試聽淡出效果
-            else if (demoMusic.currentTime + 4 > demoEnd) {
+            else if (demoMusic.currentTime + 7 > demoEnd) {
                 demoMusic.volume = (demoEnd - demoMusic.currentTime) * 0.1;
             }
             else {
@@ -259,6 +260,7 @@
         })
 
         //選擇進度條後立刻發動值的change(否則會出現延遲，造成改值失敗)
+        //測試時直接讀取本頁會造成進度條出現bug，從別頁進來則不會，推測是jquery重複讀取的關係，暫無解(但一般使用者也不會直接進入這頁)
         $(".originalSlider").on('input', function () {
             music.pause();
             $(this).trigger("change");

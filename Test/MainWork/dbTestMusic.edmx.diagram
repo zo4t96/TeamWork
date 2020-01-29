@@ -8,7 +8,7 @@
         <EntityTypeShape EntityType="dbProjectMusicStoreModel.tAlbum" Width="1.5" PointX="3" PointY="2.875" IsExpanded="true" />
         <EntityTypeShape EntityType="dbProjectMusicStoreModel.tAlbumType" Width="1.5" PointX="3.125" PointY="6.5" IsExpanded="true" />
         <EntityTypeShape EntityType="dbProjectMusicStoreModel.tMember" Width="1.5" PointX="0.75" PointY="3.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="dbProjectMusicStoreModel.tProductKind" Width="1.5" PointX="0.625" PointY="6.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbProjectMusicStoreModel.tProductKind" Width="1.5" PointX="0.75" PointY="6.375" IsExpanded="true" />
         <EntityTypeShape EntityType="dbProjectMusicStoreModel.tProduct" Width="1.5" PointX="5.25" PointY="2.125" IsExpanded="true" />
         <EntityTypeShape EntityType="dbProjectMusicStoreModel.tPurchaseItem" Width="1.5" PointX="7.375" PointY="2.125" IsExpanded="true" />
         <EntityTypeShape EntityType="dbProjectMusicStoreModel.tShoppingCart" Width="1.5" PointX="7.375" PointY="5" IsExpanded="true" />

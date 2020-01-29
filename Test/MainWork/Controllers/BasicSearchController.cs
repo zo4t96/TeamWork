@@ -7,24 +7,26 @@ using System.Web.Mvc;
 
 namespace MainWork.Controllers
 {
-    public class TwoPlayerController : Controller
+    public class BasicSearchController : Controller
     {
-        // GET: TwoPlayer
-        public ActionResult demoPlayer()
+        // GET: BasicSearch
+        public ActionResult BasicSearch()
         {
             CWebInitailize ad = new CWebInitailize();
             ViewBag.InitialModel = ad.advancedInitial();
-            return View();
+            CTakeKind tk = new CTakeKind();
+            return View(tk.takeAllKind());
         }
 
         [HttpPost]
-        public ActionResult demoPlayer(bool ajax)
+        public ActionResult BasicSearch(bool ajax)
         {
+            CTakeKind tk = new CTakeKind();
             if (ajax)
             {
                 ViewBag.ajax = true;
             }
-            return View();
+            return View(tk.takeAllKind());
         }
     }
 }
