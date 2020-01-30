@@ -1,32 +1,30 @@
 ﻿@model IEnumerable<MusicPrj.tAlbum>
+@using MusicPrj.Models;
 
 @{
     ViewBag.Title = "MyAlbumList2";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    if (Request.IsAjaxRequest()==false)
+    {
+        Layout = "~/Views/Shared/_Layout.cshtml";
+    }
+    else
+    {
+        Layout = null;
+    }
     int count = 0;
     var account = "";
-    if (Session["account"] == null || string.IsNullOrWhiteSpace(Session["account"].ToString()))
+    if (Session[CDictionary.SK_ACCOUNT] == null || string.IsNullOrWhiteSpace(Session[CDictionary.SK_ACCOUNT].ToString()))
     {
         Response.Redirect("~/Index/");
     }
     else
     {
-        account = Session["account"].ToString();
+        account = Session[CDictionary.SK_ACCOUNT].ToString();
     }
     tAlbum tA = new tAlbum();
 }
 
-<div class="sidebox">
-    <ul>
-        <li class="side-li-home-img">@Html.ActionLink("首頁", "Index", null, new { @class = "side-li-home-img" })</li>
-        <li class="side-li-serach-img">搜尋</li>
-        <li class="side-li-mymusiclibiary-img">@Html.ActionLink("增加專輯", "AddAlbum", new { account = account }, new { @class = "side-li-home-img" })</li>
-        <li class="side-li-mymusiclibiary-img">你的音樂庫</li>
-        <li class="side-li-mymusiclibiary-img">@Html.ActionLink("back", "Index", null, new { @class = "side-li-home-img" })</li>
-    </ul>
-</div>
 
-<div class="mainbox">
     <div style="padding-left:50px;padding-top:50px">
         <h3 class="fold-title" data-playurl=""><i class="fa fa-chevron-right"></i> 新增專輯</h3>
         <div class="fold">
@@ -152,4 +150,17 @@
         </table>
     </div>
 
-</div>
+<script>
+            $(function () {
+            $('h3').click(function () {
+                if ($(this).next('.fold').hasClass('o') == true) {
+                    $(this).find('i.fa').removeClass('fa-chevron-down').addClass('fa-chevron-right');
+                    $(this).next('.fold').removeClass('o').slideUp();
+                }
+                else {
+                    $(this).find('i.fa').removeClass('fa-chevron-right').addClass('fa-chevron-down');
+                    $(this).next('.fold').addClass('o').slideDown();
+                }
+            });
+        });
+</script>

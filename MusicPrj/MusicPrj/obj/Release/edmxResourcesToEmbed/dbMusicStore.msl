@@ -92,5 +92,14 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="tPlayLists">
+      <EntityTypeMapping TypeName="dbProjectMusicStoreModel.tPlayList">
+        <MappingFragment StoreEntitySet="tPlayLists">
+          <ScalarProperty Name="fProductID" ColumnName="fProductID" />
+          <ScalarProperty Name="fAccount" ColumnName="fAccount" />
+          <ScalarProperty Name="fPlayId" ColumnName="fPlayId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping>

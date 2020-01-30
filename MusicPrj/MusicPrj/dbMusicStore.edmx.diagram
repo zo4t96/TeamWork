@@ -19,6 +19,9 @@
         <AssociationConnector Association="dbProjectMusicStoreModel.FK_tShoppingCart_tMember" ManuallyRouted="false" />
         <AssociationConnector Association="dbProjectMusicStoreModel.FK_tPurchaseItem_tProducts1" ManuallyRouted="false" />
         <AssociationConnector Association="dbProjectMusicStoreModel.FK_tShoppingCart_tProducts" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="dbProjectMusicStoreModel.tPlayList" Width="1.5" PointX="7.5" PointY="6.625" />
+        <AssociationConnector Association="dbProjectMusicStoreModel.FK_tPlayLists_tMember" />
+        <AssociationConnector Association="dbProjectMusicStoreModel.FK_tPlayLists_tProducts" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -33,6 +33,14 @@
     <Property Name="fNickName" Type="nvarchar" MaxLength="50" />
     <Property Name="fMoney" Type="money" />
   </EntityType>
+  <EntityType Name="tPlayLists">
+    <Key>
+      <PropertyRef Name="fPlayId" />
+    </Key>
+    <Property Name="fPlayId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="fAccount" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="fProductID" Type="int" Nullable="false" />
+  </EntityType>
   <EntityType Name="tProductKind">
     <Key>
       <PropertyRef Name="KindID" />
@@ -108,6 +116,30 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_tPlayLists_tMember">
+    <End Role="tMember" Type="Self.tMember" Multiplicity="1" />
+    <End Role="tPlayLists" Type="Self.tPlayLists" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tMember">
+        <PropertyRef Name="fAccount" />
+      </Principal>
+      <Dependent Role="tPlayLists">
+        <PropertyRef Name="fAccount" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tPlayLists_tProducts">
+    <End Role="tProducts" Type="Self.tProducts" Multiplicity="1" />
+    <End Role="tPlayLists" Type="Self.tPlayLists" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="tProducts">
+        <PropertyRef Name="fProductID" />
+      </Principal>
+      <Dependent Role="tPlayLists">
+        <PropertyRef Name="fPlayId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_tPurchaseItem_tMember1">
     <End Role="tMember" Type="Self.tMember" Multiplicity="0..1" />
     <End Role="tPurchaseItem" Type="Self.tPurchaseItem" Multiplicity="*" />
@@ -160,6 +192,7 @@
     <EntitySet Name="tAlbum" EntityType="Self.tAlbum" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tAlbumType" EntityType="Self.tAlbumType" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tMember" EntityType="Self.tMember" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tPlayLists" EntityType="Self.tPlayLists" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tProductKind" EntityType="Self.tProductKind" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tProducts" EntityType="Self.tProducts" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tPurchaseItem" EntityType="Self.tPurchaseItem" Schema="dbo" store:Type="Tables" />
@@ -171,6 +204,14 @@
     <AssociationSet Name="FK_tAlbum_tMember" Association="Self.FK_tAlbum_tMember">
       <End Role="tMember" EntitySet="tMember" />
       <End Role="tAlbum" EntitySet="tAlbum" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tPlayLists_tMember" Association="Self.FK_tPlayLists_tMember">
+      <End Role="tMember" EntitySet="tMember" />
+      <End Role="tPlayLists" EntitySet="tPlayLists" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tPlayLists_tProducts" Association="Self.FK_tPlayLists_tProducts">
+      <End Role="tProducts" EntitySet="tProducts" />
+      <End Role="tPlayLists" EntitySet="tPlayLists" />
     </AssociationSet>
     <AssociationSet Name="FK_tPurchaseItem_tMember1" Association="Self.FK_tPurchaseItem_tMember1">
       <End Role="tMember" EntitySet="tMember" />

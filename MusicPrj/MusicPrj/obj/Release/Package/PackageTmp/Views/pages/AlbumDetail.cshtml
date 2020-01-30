@@ -1,0 +1,65 @@
+﻿@model IEnumerable<MusicPrj.tProduct>
+
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "AlbumDetail2";
+    var AlbInfo = ViewBag.AlbInfo;
+    var account = "";
+    if (Session["account"] == null || string.IsNullOrWhiteSpace(Session["account"].ToString()))
+    {
+        Response.Redirect("~/Index/");
+    }
+    else
+    {
+        account = Session["account"].ToString();
+    }
+    tProduct tP = new tProduct();
+    int demotimeStart = 0, demotimeEnd = 0;
+    string demotimestring = "", demotimestringstart = "";
+}
+
+<div class="sidebox">
+    <ul>
+        <li class="side-li-home-img">@Html.ActionLink("首頁", "Index", null, new { @class = "side-li-home-img" })</li>
+        <li class="side-li-serach-img">搜尋</li>
+        <li class="side-li-mymusiclibiary-img">你的音樂庫</li>
+        <li class="side-li-mymusiclibiary-img">你的音樂庫</li>
+        <li class="side-li-mymusiclibiary-img">我是頁籤</li>
+    </ul>
+</div>
+<div class="mainbox">
+    <div class="albumset">
+        <img src="~/CoverFiles/@AlbInfo.fCoverPath" width="320" height="320" /><br />
+        <h2 class="albumtext"><b>@AlbInfo.fAlbumName</b></h2>
+        <h3 class="albumtext">@AlbInfo.fMaker </h3>
+        <h3 class="albumtext">共有@(Model.Count()) 首</h3>
+    </div>
+    <div style="display: inline-block;vertical-align:top;">
+        @foreach (var item in Model)
+        {
+            demotimeEnd = (int)item.fPlayEnd;
+            demotimeStart = (int)item.fPlayStart;
+            demotimestringstart = $"{demotimeStart / 600}{demotimeStart / 60 % 10}:{demotimeStart % 60 / 10}{demotimeStart % 60 % 10}";
+            demotimestring = $"{demotimeEnd / 600}{demotimeEnd / 60 % 10}:{demotimeEnd % 60 / 10}{demotimeEnd % 60 % 10}";
+
+            <div class="container">
+                <div class="py-2 demoPanel">
+
+                    <div class="vbtn dplay" data-singer="@Html.DisplayFor(modelItem => item.fComposer)" data-songn="@Html.DisplayFor(modelItem => item.fProductName)" data-soid="@item.fProductID" data-start="@Html.DisplayFor(modelItem => item.fPlayStart)" data-end="@Html.DisplayFor(modelItem => item.fPlayEnd)" data-playurl="@(Url.Content("~/MusicFiles/") + Html.DisplayFor(modelItem => item.fFilePath))"><img src="~/Content/play.png"></div>
+                    <div class="vbtn dpause"><img src="~/Content/pause.png"></div>
+                    <span>@Html.DisplayFor(modelItem => item.fProductName)</span>
+                    @*<input type="range" class="demoSlider" min="0" max="100" step="0.01" value="0">*@
+                    @*<span class="nowDemo">@demotimestringstart</span>
+                        <span> / </span>*@
+                    <span class="totalDemo">@(demotimestring)</span>
+
+                </div>
+                <hr>
+            </div>
+
+        }
+
+    </div>
+</div>
+

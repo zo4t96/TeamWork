@@ -20,6 +20,7 @@ namespace MusicPrj
             this.tAlbums = new HashSet<tAlbum>();
             this.tPurchaseItems = new HashSet<tPurchaseItem>();
             this.tShoppingCarts = new HashSet<tShoppingCart>();
+            this.tPlayLists = new HashSet<tPlayList>();
         }
     
         public string fAccount { get; set; }
@@ -35,5 +36,7 @@ namespace MusicPrj
         public virtual ICollection<tPurchaseItem> tPurchaseItems { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tShoppingCart> tShoppingCarts { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tPlayList> tPlayLists { get; set; }
     }
 }

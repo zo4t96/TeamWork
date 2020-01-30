@@ -1,0 +1,36 @@
+        public int fProductID { get; set; }
+        public Nullable<int> fAlbumID { get; set; }
+        [Display(Name = "單曲名稱")]
+        [Required(ErrorMessage = "單曲名稱必填")]
+        public string fProductName { get; set; }
+        public string fArtist { get; set; }
+        public Nullable<decimal> fSIPrice { get; set; }
+        public string fComposer { get; set; }
+        public string fArranger { get; set; }
+        public string fLyricist { get; set; }
+        public string fKind { get; set; }
+        public byte[] fMusic { get; set; }
+        public string fFilePath { get; set; }
+        public System.Web.HttpPostedFileBase fRealFile { get; set; }
+        public Nullable<double> fPlayStart { get; set; }
+        public Nullable<double> fPlayEnd { get; set; }
+        public Nullable<int> fPlays { get; set; }
+        public Nullable<int> fPlaye { get; set; }
+        public Nullable<int> fStatus { get; set; }
+        public Nullable<int> fDownloadCount { get; set; }
+        public string fModifiedDate { get; set; }
+        public string fNation { get; set; }
+
+        public int fAlbumID { get; set; }
+        [Display(Name ="專輯名稱")]
+        [Required(ErrorMessage ="專輯名稱必填")]
+        public string fAlbumName { get; set; }
+        public string fMaker { get; set; }
+        public string fAccount { get; set; }
+        public string fYear { get; set; }
+        public Nullable<int> fType { get; set; }
+        public Nullable<int> fStatus { get; set; }
+        public Nullable<decimal> fALPrice { get; set; }
+        public string fCoverPath { get; set; }
+        public System.Web.HttpPostedFileBase fCoverRealFile { get; set; }
+        public string fPublisher { get; set; }

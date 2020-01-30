@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MusicPrj.Models;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -10,31 +11,139 @@ namespace MusicPrj.Controllers
     public class AlbumController : Controller
     {
         // GET: Album
+
+        public ActionResult Main()
+        {
+
+            return View();
+        }
+        [HttpPost]
+        public ActionResult Main(bool ajax)
+        {
+            return View();
+        }
+
         public ActionResult Index()
         {
             dbProjectMusicStoreEntities db = new dbProjectMusicStoreEntities();
             var album = from a in db.tAlbums
                         select a;
-            Session["account"] = "aaa";
+            CWebInitailize ad = new CWebInitailize();
+            ViewBag.InitialModel = ad.advancedInitial();
+            Session[CDictionary.SK_ACCOUNT] = "aaa";
+            Session[CDictionary.SK_sideboxList1Name] = "我的發行";
+            Session[CDictionary.SK_sideboxList1Method] = "MyAlbumList";
+            Session[CDictionary.SK_sideboxList1Id] = "aaa";
+            //List <tPlayList> tPL = db.tPlayLists.Where(p => p.fAccount == Session[CDictionary.SK_ACCOUNT].ToString()).ToList();
+            //if (tPL != null)
+            //{
+            //    Session[CDictionary.SK_PLAYERLIST] = tPL;
+            //}
             return View(album);
+        }
+
+        [HttpPost]
+        public ActionResult Index(bool ajax)
+        {
+            dbProjectMusicStoreEntities db = new dbProjectMusicStoreEntities();
+            var album = from a in db.tAlbums
+                        select a;
+            CWebInitailize ad = new CWebInitailize();
+            ViewBag.InitialModel = ad.advancedInitial();
+            Session[CDictionary.SK_ACCOUNT] = "aaa";
+            Session[CDictionary.SK_sideboxList1Name] = "我的發行";
+            Session[CDictionary.SK_sideboxList1Method] = "MyAlbumList";
+            Session[CDictionary.SK_sideboxList1Id] = "aaa";
+            //List <tPlayList> tPL = db.tPlayLists.Where(p => p.fAccount == Session[CDictionary.SK_ACCOUNT].ToString()).ToList();
+            //if (tPL != null)
+            //{
+            //    Session[CDictionary.SK_PLAYERLIST] = tPL;
+            //}
+            return View(album);
+        }
+
+
+        public ActionResult PlayLists()
+        {
+            CWebInitailize ad = new CWebInitailize();
+            ViewBag.InitialModel = ad.advancedInitial();
+            int amid = 5;
+
+            dbProjectMusicStoreEntities db = new dbProjectMusicStoreEntities();
+            ViewBag.AlbInfo = db.tAlbums.FirstOrDefault(p => p.fAlbumID == amid);
+            var list = db.tProducts.Where(p => p.fAlbumID == amid);
+            //         Session["account"] = "aaa";
+            if (list != null)
+            {
+                Session["albumid"] = amid;
+                return View(list);
+            }
+            else
+            {
+                return View();
+            }
+
+        }
+
+
+        public ActionResult Search()
+        {
+            int amid = 5;
+
+            dbProjectMusicStoreEntities db = new dbProjectMusicStoreEntities();
+            ViewBag.AlbInfo = db.tAlbums.FirstOrDefault(p => p.fAlbumID == amid);
+            var list = db.tProducts.Where(p => p.fAlbumID == amid);
+            //         Session["account"] = "aaa";
+            if (list != null)
+            {
+                Session["albumid"] = amid;
+                return View(list);
+            }
+            else
+            {
+                return View();
+            }
+
         }
 
         public ActionResult test()
         {
-
+            //test 測試框內框外對連結影響0129
             return View();
         }
 
+
         public ActionResult MyAlbumList(string account)
         {
+            CWebInitailize ad = new CWebInitailize();
+            ViewBag.InitialModel = ad.advancedInitial();
             dbProjectMusicStoreEntities db = new dbProjectMusicStoreEntities();
             var list = db.tAlbums.Where(p => p.fAccount == account);
             ViewBag.account = account;
+            Session[CDictionary.SK_sideboxList1Name] = "增加專輯";
+            Session[CDictionary.SK_sideboxList1Method] = "AddAlbum";
+            Session[CDictionary.SK_sideboxList1Id] = Session[CDictionary.SK_ACCOUNT].ToString();
+            return View(list);
+        }
+
+        [HttpPost]
+        public ActionResult MyAlbumList(string account, bool ajax)
+        {
+            CWebInitailize ad = new CWebInitailize();
+            ViewBag.InitialModel = ad.advancedInitial();
+            dbProjectMusicStoreEntities db = new dbProjectMusicStoreEntities();
+            var list = db.tAlbums.Where(p => p.fAccount == account);
+            ViewBag.account = account;
+            Session[CDictionary.SK_sideboxList1Name] = "增加專輯";
+            Session[CDictionary.SK_sideboxList1Method] = "AddAlbum";
+            Session[CDictionary.SK_sideboxList1Id] = Session[CDictionary.SK_ACCOUNT].ToString();
             return View(list);
         }
 
         public ActionResult AlbumInfo(int amid)
         {
+            CWebInitailize ad = new CWebInitailize();
+            ViewBag.InitialModel = ad.advancedInitial();
             dbProjectMusicStoreEntities db = new dbProjectMusicStoreEntities();
             ViewBag.AlbInfo = db.tAlbums.FirstOrDefault(p => p.fAlbumID == amid);
             var list = db.tProducts.Where(p => p.fAlbumID == amid);
@@ -50,8 +159,10 @@ namespace MusicPrj.Controllers
             }
         }
 
-        public ActionResult AlbumInfo2(int amid)
+        public ActionResult AlbumDetail(int amid)
         {
+            CWebInitailize ad = new CWebInitailize();
+            ViewBag.InitialModel = ad.advancedInitial();
             dbProjectMusicStoreEntities db = new dbProjectMusicStoreEntities();
             ViewBag.AlbInfo = db.tAlbums.FirstOrDefault(p => p.fAlbumID == amid);
             var list = db.tProducts.Where(p => p.fAlbumID == amid);
@@ -67,8 +178,11 @@ namespace MusicPrj.Controllers
             }
         }
 
-        public ActionResult AlbumDetail(int amid)
+        [HttpPost]
+        public ActionResult AlbumDetail(int amid, bool ajax)
         {
+            CWebInitailize ad = new CWebInitailize();
+            ViewBag.InitialModel = ad.advancedInitial();
             dbProjectMusicStoreEntities db = new dbProjectMusicStoreEntities();
             ViewBag.AlbInfo = db.tAlbums.FirstOrDefault(p => p.fAlbumID == amid);
             var list = db.tProducts.Where(p => p.fAlbumID == amid);
@@ -82,6 +196,28 @@ namespace MusicPrj.Controllers
             {
                 return View();
             }
+        }
+
+
+        public ActionResult AAlbumDetail(int amid)
+        {
+            
+            dbProjectMusicStoreEntities db = new dbProjectMusicStoreEntities();
+            ViewBag.AlbInfo = db.tAlbums.FirstOrDefault(p => p.fAlbumID == amid);
+            var list = db.tProducts.Where(p => p.fAlbumID == amid);
+            //         Session["account"] = "aaa";
+
+                if (list != null)
+                {
+                    Session["albumid"] = amid;
+                    return View("_AAlbumDetail", list);
+                }
+                else
+                {
+                    return View("_AAlbumDetail", null);
+
+                }
+
         }
 
         public ActionResult AlbumInfo3()
@@ -112,7 +248,7 @@ namespace MusicPrj.Controllers
             var path = Path.Combine(Server.MapPath("~/CoverFiles/"), name);
             tA.fCoverPath = name;
             tA.fCoverRealFile.SaveAs(path);
-            tA.fAccount = Session["account"].ToString();
+            tA.fAccount = Session[CDictionary.SK_ACCOUNT].ToString();
             dbProjectMusicStoreEntities db = new dbProjectMusicStoreEntities();
             db.tAlbums.Add(tA);
             try
@@ -161,14 +297,14 @@ namespace MusicPrj.Controllers
 
 
         //編輯單曲
-        public ActionResult EditSong(int amid)
+        public ActionResult EditSong(int amid, bool ajax)
         {
             return View();
         }
 
 
         //刪除單曲
-        public ActionResult DelteSong(int amid)
+        public ActionResult DelteSong(int amid, bool ajax)
         {
             string s1 = "AlbumInfo?amid=" + Session["albumid"].ToString();
             dbProjectMusicStoreEntities db = new dbProjectMusicStoreEntities();
@@ -202,9 +338,9 @@ namespace MusicPrj.Controllers
             return Redirect(s1);
         }
 
-        public ActionResult DeleteAlbum(int amid)
+        public ActionResult DeleteAlbum(int amid, bool ajax)
         {
-            string s1 = "MyAlbumList?amid=" + Session["account"].ToString();
+            string s1 = "MyAlbumList?amid=" + Session[CDictionary.SK_ACCOUNT].ToString();
             dbProjectMusicStoreEntities db = new dbProjectMusicStoreEntities();
             tAlbum tA = db.tAlbums.FirstOrDefault(p => p.fAlbumID == amid);
             if (tA == null)

@@ -164,11 +164,13 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Scripts\flushpage.js" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AlbumController.cs" />
+    <Compile Include="Controllers\CommonController.cs" />
     <Compile Include="dbMusicStore.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -187,6 +189,10 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\CDictionary.cs" />
+    <Compile Include="Models\CTakeKind.cs" />
+    <Compile Include="Models\CTakeType.cs" />
+    <Compile Include="Models\CWebInitailize.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="tAlbum.cs">
       <DependentUpon>dbMusicStore.tt</DependentUpon>
@@ -195,6 +201,9 @@
       <DependentUpon>dbMusicStore.tt</DependentUpon>
     </Compile>
     <Compile Include="tMember.cs">
+      <DependentUpon>dbMusicStore.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tPlayList.cs">
       <DependentUpon>dbMusicStore.tt</DependentUpon>
     </Compile>
     <Compile Include="tProduct.cs">
@@ -228,6 +237,13 @@
     <Content Include="Views\Album\AlbumDetail.cshtml" />
     <Content Include="Views\Album\MyAlbumList.cshtml" />
     <Content Include="Views\Album\AlbumInfo2.cshtml" />
+    <Content Include="Views\pages\AlbumDetail.cshtml" />
+    <Content Include="Views\pages\Index.cshtml" />
+    <Content Include="Views\Album\_AAlbumDetail.cshtml" />
+    <Content Include="Views\Album\_AIndex.cshtml" />
+    <Content Include="Views\Album\PlayLists.cshtml" />
+    <Content Include="Views\Album\Search.cshtml" />
+    <Content Include="Views\Common\Login.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -238,7 +254,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="CoverFiles\" />
-    <Folder Include="Models\" />
     <Folder Include="ViewModel\" />
   </ItemGroup>
   <ItemGroup>

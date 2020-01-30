@@ -1,21 +1,21 @@
 ﻿@model IEnumerable<MusicPrj.tAlbum>
+@using MusicPrj.Models;
 
 @{
     int count = 0;
     ViewBag.Title = "Index";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    if (Request.IsAjaxRequest() == false)
+    {
+        Layout = "~/Views/Shared/_Layout.cshtml";
+    }
+    else
+    {
+        Layout = null;
+    }
+
+
 }
 
-
-    <div class="sidebox">
-        <ul>
-            <li class="side-li-home-img">首頁</li>
-            <li class="side-li-serach-img">搜尋</li>
-            <li class="side-li-mymusiclibiary-img">你的音樂庫</li>
-            <li class="side-li-mymusiclibiary-img">@Html.ActionLink("我的發行", "MyAlbumList", new { account = "aaa" }, new { @class = "side-li-mymusiclibiary-img" })</li>
-        </ul>
-    </div>
-    <div class="mainbox">
 
         <div style="padding-left:50px">
             <h1 class="headtitle">所有專輯</h1>
@@ -30,7 +30,8 @@
                             //      @:<tr>
                         }
                         <td class="productitem">
-                            <a href="~/Album/AlbumDetail?amid=@Html.DisplayFor(modelItem => item.fAlbumID)" class="productitemhy">
+
+                            <div class="productitemhy" data-singid="@Html.DisplayFor(modelItem => item.fAlbumID)">
                                 <fieldset style="border:1px solid;height:300px;border-radius:5px;padding:5px;">
                                     <table>
                                         <tr><td><img src="~/CoverFiles/@Html.DisplayFor(modelItem => item.fCoverPath)" width="200" height="200" /></td></tr>
@@ -43,7 +44,7 @@
                                     </table>
                                 </fieldset>
 
-                            </a>
+                            </div>
                         </td>
                         if (count % 7 == 0)
                         {
@@ -53,5 +54,16 @@
                 </tr>
             </table>
         </div>
-    </div>
 
+        <script>
+
+                    $(".productitemhy").on("click", function () {
+         //               console.log($(this).data('singid'));
+    //        let where = @Url.Content("/AlbumDetail");
+            let link = "/test/Album/AlbumDetail?amid=" + $(this).data('singid');
+        //    href = "~/Album/test?amid=" + link;
+               $.get(link, function (data) {
+                $(".mainbox").html(data);
+            })
+        })
+        </script>

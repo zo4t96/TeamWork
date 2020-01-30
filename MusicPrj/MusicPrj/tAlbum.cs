@@ -11,8 +11,7 @@ namespace MusicPrj
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-
+    
     public partial class tAlbum
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -22,8 +21,6 @@ namespace MusicPrj
         }
     
         public int fAlbumID { get; set; }
-        [Display(Name ="專輯名稱")]
-        [Required(ErrorMessage ="專輯名稱必填")]
         public string fAlbumName { get; set; }
         public string fMaker { get; set; }
         public string fAccount { get; set; }

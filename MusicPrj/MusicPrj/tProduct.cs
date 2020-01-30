@@ -11,8 +11,7 @@ namespace MusicPrj
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-
+    
     public partial class tProduct
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -23,8 +22,6 @@ namespace MusicPrj
     
         public int fProductID { get; set; }
         public Nullable<int> fAlbumID { get; set; }
-        [Display(Name = "單曲名稱")]
-        [Required(ErrorMessage = "單曲名稱必填")]
         public string fProductName { get; set; }
         public string fArtist { get; set; }
         public Nullable<decimal> fSIPrice { get; set; }
@@ -48,5 +45,6 @@ namespace MusicPrj
         public virtual tPurchaseItem tPurchaseItem { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tShoppingCart> tShoppingCarts { get; set; }
+        public virtual tPlayList tPlayList { get; set; }
     }
 }
