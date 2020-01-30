@@ -1,4 +1,4 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="en">
 <head>
     <title>Title</title>
@@ -14,10 +14,6 @@
         * {
             margin: 0;
             padding: 0;
-            font-family: "微軟正黑體";
-            color: white;
-            font-weight: 700;
-            font-size: 20px;
         }
 
         .header {
@@ -59,7 +55,7 @@
 
         .sidebox {
             position: fixed;
-            top: 70px;
+            top: 70;
             left: 0; /*使元素靠左*/
             margin-left: 70px;
             margin-top: 30px;
@@ -83,10 +79,10 @@
             width: 100%;
             height: calc(100%-70px);
             min-height: 1220px;
-            border-left: 200px solid #040404; /*設置右邊框寬度為XXXpx像素，同等於sidebox的寬度*/
+            border-left: 200px solid #202020; /*設置右邊框寬度為XXXpx像素，同等於sidebox的寬度*/
             background-color: #696969;
-            margin-bottom:120px;
         }
+
         #footer {
             position: fixed;
             bottom: 0;
@@ -261,13 +257,13 @@
         <div class="sidebox">
             <ul>
                 <li class="side-li-home-img">首頁</li>
-                <li class="side-li-serach-img"><button id="search">搜尋</button></li>
+                <li class="side-li-serach-img">搜尋</li>
                 <li class="side-li-mymusiclibiary-img">你的音樂庫</li>
             </ul>
         </div>
 
         <div class="mainbox">
-            @RenderBody()
+           
         </div>
 
     </div>
@@ -316,7 +312,7 @@
     </div>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     <script>
@@ -435,16 +431,6 @@
                 player.play();
         });
 
-        $("#search").click(function () {
-            //$(".mainbox").load("BasicSerch/BasicSerch");
-            //上下兩者都是ajax，目前產生結果會相同，尚不了解箇中差異
-            $.get("BasicSerch/BasicSerch", function (data) {
-                $(".mainbox").html(data);
-                console.log(data)
-            })
-            //給予虛擬網址，隨便打都能過
-            history.pushState("", "","35645431321321g2hgfhdfhdhgdf");
-        });
     </script>
 </body>
 </html>
