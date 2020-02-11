@@ -17,6 +17,7 @@
     <NavigationProperty Name="tAlbumType" Relationship="Self.FK_tAlbum_tAlbumType" FromRole="tAlbum" ToRole="tAlbumType" />
     <NavigationProperty Name="tMember" Relationship="Self.FK_tAlbum_tMember" FromRole="tAlbum" ToRole="tMember" />
     <NavigationProperty Name="tProducts" Relationship="Self.FK_tProducts_tAlbum" FromRole="tAlbum" ToRole="tProducts" />
+    <Property Name="fKinds" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
   </EntityType>
   <EntityType Name="tAlbumType">
     <Key>
@@ -25,6 +26,8 @@
     <Property Name="fTypeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="fTypeName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <NavigationProperty Name="tAlbums" Relationship="Self.FK_tAlbum_tAlbumType" FromRole="tAlbumType" ToRole="tAlbum" />
+    <Property Name="fColor" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="fPhotoPath" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
   </EntityType>
   <EntityType Name="tMember">
     <Key>
@@ -40,13 +43,14 @@
     <NavigationProperty Name="tPurchaseItems" Relationship="Self.FK_tPurchaseItem_tMember1" FromRole="tMember" ToRole="tPurchaseItem" />
     <NavigationProperty Name="tShoppingCarts" Relationship="Self.FK_tShoppingCart_tMember" FromRole="tMember" ToRole="tShoppingCart" />
     <NavigationProperty Name="tPlayLists" Relationship="dbProjectMusicStoreModel.FK_tPlayLists_tMember" FromRole="tMember" ToRole="tPlayList" />
-  </EntityType>
-  <EntityType Name="tProductKind">
-    <Key>
-      <PropertyRef Name="KindID" />
-    </Key>
-    <Property Name="KindID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="KindName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="fPicPath" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="fSubscriptStartDate" Type="DateTime" Precision="3" />
+    <Property Name="fSubscriptEndDate" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="tActivities" Relationship="dbProjectMusicStoreModel.FK_tActivity_tMember" FromRole="tMember" ToRole="tActivity" />
+    <NavigationProperty Name="tLogs" Relationship="dbProjectMusicStoreModel.FK_tLog_tMember" FromRole="tMember" ToRole="tLog" />
+    <NavigationProperty Name="tLogs1" Relationship="dbProjectMusicStoreModel.FK_tLog_tMember1" FromRole="tMember" ToRole="tLog" />
+    <NavigationProperty Name="tMessages" Relationship="dbProjectMusicStoreModel.FK_tMessage_tMember" FromRole="tMember" ToRole="tMessage" />
+    <NavigationProperty Name="tMessages1" Relationship="dbProjectMusicStoreModel.FK_tMessage_tMember1" FromRole="tMember" ToRole="tMessage" />
   </EntityType>
   <EntityType Name="tProduct">
     <Key>
@@ -68,11 +72,11 @@
     <Property Name="fStatus" Type="Int32" />
     <Property Name="fDownloadCount" Type="Int32" />
     <Property Name="fModifiedDate" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="fNation" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <NavigationProperty Name="tAlbum" Relationship="Self.FK_tProducts_tAlbum" FromRole="tProducts" ToRole="tAlbum" />
     <NavigationProperty Name="tPurchaseItem" Relationship="Self.FK_tPurchaseItem_tProducts1" FromRole="tProducts" ToRole="tPurchaseItem" />
     <NavigationProperty Name="tShoppingCarts" Relationship="Self.FK_tShoppingCart_tProducts" FromRole="tProducts" ToRole="tShoppingCart" />
-    <NavigationProperty Name="tPlayList" Relationship="dbProjectMusicStoreModel.FK_tPlayLists_tProducts" FromRole="tProduct" ToRole="tPlayList" />
+    <NavigationProperty Name="tPlayLists" Relationship="dbProjectMusicStoreModel.FK_tPlayLists_tProducts" FromRole="tProduct" ToRole="tPlayList" />
+    <Property Name="fPlaybackCount" Type="Int32" />
   </EntityType>
   <EntityType Name="tPurchaseItem">
     <Key>
@@ -188,7 +192,6 @@
     <EntitySet Name="tAlbums" EntityType="Self.tAlbum" />
     <EntitySet Name="tAlbumTypes" EntityType="Self.tAlbumType" />
     <EntitySet Name="tMembers" EntityType="Self.tMember" />
-    <EntitySet Name="tProductKinds" EntityType="Self.tProductKind" />
     <EntitySet Name="tProducts" EntityType="Self.tProduct" />
     <EntitySet Name="tPurchaseItems" EntityType="Self.tPurchaseItem" />
     <EntitySet Name="tShoppingCarts" EntityType="Self.tShoppingCart" />
@@ -229,6 +232,30 @@
       <End Role="tProduct" EntitySet="tProducts" />
       <End Role="tPlayList" EntitySet="tPlayLists" />
     </AssociationSet>
+    <EntitySet Name="tActivities" EntityType="dbProjectMusicStoreModel.tActivity" />
+    <EntitySet Name="tAlbumKinds" EntityType="dbProjectMusicStoreModel.tAlbumKind" />
+    <EntitySet Name="tLogs" EntityType="dbProjectMusicStoreModel.tLog" />
+    <EntitySet Name="tMessages" EntityType="dbProjectMusicStoreModel.tMessage" />
+    <AssociationSet Name="FK_tActivity_tMember" Association="dbProjectMusicStoreModel.FK_tActivity_tMember">
+      <End Role="tMember" EntitySet="tMembers" />
+      <End Role="tActivity" EntitySet="tActivities" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tLog_tMember" Association="dbProjectMusicStoreModel.FK_tLog_tMember">
+      <End Role="tMember" EntitySet="tMembers" />
+      <End Role="tLog" EntitySet="tLogs" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tLog_tMember1" Association="dbProjectMusicStoreModel.FK_tLog_tMember1">
+      <End Role="tMember" EntitySet="tMembers" />
+      <End Role="tLog" EntitySet="tLogs" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tMessage_tMember" Association="dbProjectMusicStoreModel.FK_tMessage_tMember">
+      <End Role="tMember" EntitySet="tMembers" />
+      <End Role="tMessage" EntitySet="tMessages" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tMessage_tMember1" Association="dbProjectMusicStoreModel.FK_tMessage_tMember1">
+      <End Role="tMember" EntitySet="tMembers" />
+      <End Role="tMessage" EntitySet="tMessages" />
+    </AssociationSet>
   </EntityContainer>
   <EntityType Name="tPlayList">
     <Key>
@@ -254,13 +281,118 @@
   </Association>
   <Association Name="FK_tPlayLists_tProducts">
     <End Type="dbProjectMusicStoreModel.tProduct" Role="tProduct" Multiplicity="1" />
-    <End Type="dbProjectMusicStoreModel.tPlayList" Role="tPlayList" Multiplicity="0..1" />
+    <End Type="dbProjectMusicStoreModel.tPlayList" Role="tPlayList" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="tProduct">
         <PropertyRef Name="fProductID" />
       </Principal>
       <Dependent Role="tPlayList">
-        <PropertyRef Name="fPlayId" />
+        <PropertyRef Name="fProductID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="tActivity">
+    <Key>
+      <PropertyRef Name="fId" />
+    </Key>
+    <Property Name="fId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="fLauncher" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="fStartTime" Type="DateTime" Precision="3" />
+    <Property Name="fEndTime" Type="DateTime" Precision="3" />
+    <Property Name="fTitle" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="tMember" Relationship="dbProjectMusicStoreModel.FK_tActivity_tMember" FromRole="tActivity" ToRole="tMember" />
+  </EntityType>
+  <EntityType Name="tAlbumKind">
+    <Key>
+      <PropertyRef Name="KindID" />
+    </Key>
+    <Property Name="KindID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="KindName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="tLog">
+    <Key>
+      <PropertyRef Name="fLogId" />
+    </Key>
+    <Property Name="fLogId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="fIssuerFrom" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="fActionTo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="fCategory" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="fMessage" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="tMember" Relationship="dbProjectMusicStoreModel.FK_tLog_tMember" FromRole="tLog" ToRole="tMember" />
+    <NavigationProperty Name="tMember1" Relationship="dbProjectMusicStoreModel.FK_tLog_tMember1" FromRole="tLog" ToRole="tMember" />
+  </EntityType>
+  <EntityType Name="tMessage">
+    <Key>
+      <PropertyRef Name="fMessageId" />
+    </Key>
+    <Property Name="fMessageId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="fAccountFrom" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="fAccountTo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="fContent" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="fTime" Type="DateTime" Precision="3" />
+    <Property Name="fStatus" Type="Int32" />
+    <Property Name="fRead" Type="Int32" />
+    <NavigationProperty Name="tMember" Relationship="dbProjectMusicStoreModel.FK_tMessage_tMember" FromRole="tMessage" ToRole="tMember" />
+    <NavigationProperty Name="tMember1" Relationship="dbProjectMusicStoreModel.FK_tMessage_tMember1" FromRole="tMessage" ToRole="tMember" />
+    <Property Name="fTitle" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <Association Name="FK_tActivity_tMember">
+    <End Type="dbProjectMusicStoreModel.tMember" Role="tMember" Multiplicity="0..1" />
+    <End Type="dbProjectMusicStoreModel.tActivity" Role="tActivity" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tMember">
+        <PropertyRef Name="fAccount" />
+      </Principal>
+      <Dependent Role="tActivity">
+        <PropertyRef Name="fLauncher" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tLog_tMember">
+    <End Type="dbProjectMusicStoreModel.tMember" Role="tMember" Multiplicity="0..1" />
+    <End Type="dbProjectMusicStoreModel.tLog" Role="tLog" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tMember">
+        <PropertyRef Name="fAccount" />
+      </Principal>
+      <Dependent Role="tLog">
+        <PropertyRef Name="fIssuerFrom" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tLog_tMember1">
+    <End Type="dbProjectMusicStoreModel.tMember" Role="tMember" Multiplicity="0..1" />
+    <End Type="dbProjectMusicStoreModel.tLog" Role="tLog" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tMember">
+        <PropertyRef Name="fAccount" />
+      </Principal>
+      <Dependent Role="tLog">
+        <PropertyRef Name="fActionTo" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tMessage_tMember">
+    <End Type="dbProjectMusicStoreModel.tMember" Role="tMember" Multiplicity="0..1" />
+    <End Type="dbProjectMusicStoreModel.tMessage" Role="tMessage" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tMember">
+        <PropertyRef Name="fAccount" />
+      </Principal>
+      <Dependent Role="tMessage">
+        <PropertyRef Name="fAccountFrom" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tMessage_tMember1">
+    <End Type="dbProjectMusicStoreModel.tMember" Role="tMember" Multiplicity="0..1" />
+    <End Type="dbProjectMusicStoreModel.tMessage" Role="tMessage" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tMember">
+        <PropertyRef Name="fAccount" />
+      </Principal>
+      <Dependent Role="tMessage">
+        <PropertyRef Name="fAccountTo" />
       </Dependent>
     </ReferentialConstraint>
   </Association>

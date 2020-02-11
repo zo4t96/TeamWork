@@ -78,3 +78,5 @@ C:\Users\user\source\repos\MusicPrj\MusicPrj\obj\Release\MusicPrj.csproj.CopyCom
 C:\Users\user\source\repos\MusicPrj\MusicPrj\obj\Release\MusicPrj.dll
 C:\Users\user\source\repos\MusicPrj\MusicPrj\obj\Release\MusicPrj.pdb
 C:\Users\user\source\repos\MusicPrj\MusicPrj\bin\zh-Hant\EntityFramework.SqlServer.resources.dll
+C:\Users\user\source\repos\MusicPrj\MusicPrj\bin\Newtonsoft.Json.dll
+C:\Users\user\source\repos\MusicPrj\MusicPrj\bin\Newtonsoft.Json.xml

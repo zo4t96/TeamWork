@@ -11,9 +11,6 @@ namespace MusicPrj.Models
         public static readonly string SK_sideboxList1Name = "SK_sideboxList1Name";
         public static readonly string SK_sideboxList1Method = "SK_sideboxList1Method";
         public static readonly string SK_sideboxList1Id = "SK_sideboxList1Id";
-        public static readonly string SK_sideboxList2Name = "SK_sideboxList2Name";
-        public static readonly string SK_sideboxList2Method = "SK_sideboxList2Method";
-        public static readonly string SK_sideboxList2Id = "SK_sideboxList2Id";
         public static readonly string SK_PLAYERLIST = "SK_PLAYERLIST";
 
     }

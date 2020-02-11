@@ -11,25 +11,38 @@ namespace MusicPrj
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class tProduct
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public tProduct()
         {
             this.tShoppingCarts = new HashSet<tShoppingCart>();
+            this.tPlayLists = new HashSet<tPlayList>();
         }
-    
+
         public int fProductID { get; set; }
         public Nullable<int> fAlbumID { get; set; }
+        [Display(Name = "單曲名稱")]
+        [Required(ErrorMessage = "單曲名稱必填")]
         public string fProductName { get; set; }
+        [Display(Name = "演唱者")]
+        [Required(ErrorMessage = "演唱者名稱必填")]
         public string fArtist { get; set; }
+        [Display(Name = "售價")]
+        [Required(ErrorMessage = "售價必填")]
         public Nullable<decimal> fSIPrice { get; set; }
+        [Display(Name = "演奏")]
         public string fComposer { get; set; }
+        [Display(Name = "編曲")]
         public string fArranger { get; set; }
+        [Display(Name = "作詞")]
         public string fLyricist { get; set; }
+        [Display(Name = "單曲類型")]
         public string fKind { get; set; }
         public byte[] fMusic { get; set; }
+        [Display(Name = "音樂檔(限mp3)")]
         public string fFilePath { get; set; }
         public System.Web.HttpPostedFileBase fRealFile { get; set; }
         public Nullable<double> fPlayStart { get; set; }
@@ -39,12 +52,13 @@ namespace MusicPrj
         public Nullable<int> fStatus { get; set; }
         public Nullable<int> fDownloadCount { get; set; }
         public string fModifiedDate { get; set; }
-        public string fNation { get; set; }
-    
+        public Nullable<int> fPlaybackCount { get; set; }
+
         public virtual tAlbum tAlbum { get; set; }
         public virtual tPurchaseItem tPurchaseItem { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tShoppingCart> tShoppingCarts { get; set; }
-        public virtual tPlayList tPlayList { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tPlayList> tPlayLists { get; set; }
     }
 }

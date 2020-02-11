@@ -8,20 +8,17 @@
     <title>Title</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <style>
         * {
             margin: 0;
             padding: 0;
         }
 
-         li {
+        li {
             list-style-type: none;
             margin: 5px;
         }
@@ -134,6 +131,7 @@
         .advancedSelect {
             margin: 10px;
         }
+
         .selectedItem,
         .selectableItem,
         .itemAdd {
@@ -143,8 +141,9 @@
             padding: 5px;
             margin: 2px 1px;
         }
-        .selectedItem{
-            display:none;
+
+        .selectedItem {
+            display: none;
         }
 
         .itemAdd {
@@ -393,7 +392,7 @@
         .btn img {
             width: 30px;
             height: 22.5px;
-            margin: 10px;
+            margin: 5px;
             /*下面是色彩反轉的濾鏡效果(把黑圖片變白)*/
             filter: invert();
         }
@@ -407,18 +406,20 @@
             text-overflow: ellipsis; /*出現省略號*/
             white-space: nowrap;
         }
+
         .productitem {
             float: left;
             color: white;
             margin-left: 10px;
             margin-bottom: 0.5%;
             font-family: 微軟正黑體;
+            background-color:#444444;
+            cursor: pointer;
+            border-radius:10px
         }
 
             .productitem:hover {
-                background-color: darkgray;
-                cursor: pointer;
-                font-family: 微軟正黑體;
+                background-color: dimgray;
             }
 
         .productitemhy:link {
@@ -435,7 +436,7 @@
             margin-left: 20px;
             font-family: 微軟正黑體;
         }
-        /*商品box結束*/
+        /*商品box結束
         /*albuminfo開始*/
         /*專輯圖/介紹開始*/
         .albumset {
@@ -462,13 +463,13 @@
             cursor: pointer;
             color: #525252;
             margin-bottom: 0;
-            width: 120vh
+            width: 100%
         }
 
         .fold {
             display: none;
             line-height: 17pt;
-            width: 120vh
+            width: 100%
         }
 
         .fold-container {
@@ -477,6 +478,40 @@
         }
         /*摺疊樣式結束*/
         /*MyAlbumList結束*/
+        /*撥放清單開始*/
+         #playListPanel {
+            position: absolute;
+            right: 90px;
+            top: 0px;
+            background: #3c3d41;
+            width: 160px;
+        }
+        .playListDetail {
+            display: none;
+            /*position: none;*/
+            width: 1200px;
+            border-radius: 10px;
+            padding: 5px 20px;
+            background-color: #040404;
+            background-image: linear-gradient(#474747,#040404);
+            opacity: 0;
+            transition: 0.1s;
+            box-shadow: 1px 1px 2px #818181;
+            height:400px;
+            overflow-y:scroll;
+        }
+          .adSwitchP {
+            opacity: 1;
+            display: block;
+        }
+          .playBar {
+            position: relative;
+            left: 200px;
+            margin: 15px;
+            width: 100%;
+            min-width: 200px;
+        }
+                /*撥放清單結束*/
     </style>
 </head>
 <body>
@@ -491,6 +526,7 @@
             @* 基本搜尋條(結合進階搜尋鍵) *@
             <div class="input-group">
                 <input class="searchtxt form-control" type="text" placeholder="搜尋歌曲..." name="basicSearch">
+                <div class="well" style="margin:10px;"></div>
                 <div class="input-group-append">
                     <button class="btn btn-outline-secondary advancedBtn">進階搜尋</button>
                     <button class="btn btn-outline-secondary searchBtn" type="button">
@@ -543,12 +579,12 @@
                             <div class="selected typeAdd" data-selector="like"><i class="fa fa-plus"></i></div>
                         </div>
                         @* 點選+號後會出現的type選擇表，位置應在+號正下方 *@
-                    <div class="selectableItemPanel">
-                        @foreach (var item in webInitial.kinds)
-                        {
-                            <div class="selectableItem">@item.KindName</div>
-                        }
-                    </div>
+                        <div class="selectableItemPanel">
+                            @foreach (var item in webInitial.kinds)
+                            {
+                                <div class="selectableItem">@item.KindName</div>
+                            }
+                        </div>
                     </div>
                     @* 剔除不想要的類別 *@
                     <div class="typeDislikeSelect advancedSelect">
@@ -562,421 +598,631 @@
             </div>
         </div>
 
-        <div class="header-button">
-            <button type="button">註冊</button>
-            <button type="button">@Html.ActionLink("登入", "Login", "Common", null, new { @class = "side-li-home-img" })</button>
-        </div>
-    </div>
-            <div id="container">
-
-                <div class="sidebox">
-                    @*@Session[CDictionary.SK_sideboxList1Name] = "";
-                    @Session[CDictionary.SK_sideboxList1Method] = "";
-                    @Session[CDictionary.SK_sideboxList1Id] = "";*@
-                    <ul>
-                        <li class="side-li-home-img">@Html.ActionLink("首頁", "Index", null, new { @class = "side-li-home-img" })</li>
-                        <li class="side-li-serach-img">@Html.ActionLink("搜尋", "Search", null, new { @class = "side-li-home-img" })</li>
-                        <li class="side-li-mymusiclibiary-img">@Html.ActionLink("你的音樂庫", "PlayLists", null, new { @class = "side-li-home-img" })</li>
-                        <li class="side-li-mymusiclibiary-img">@Html.ActionLink(Session[CDictionary.SK_sideboxList1Name].ToString(), Session[CDictionary.SK_sideboxList1Method].ToString(), new { account = Session[CDictionary.SK_sideboxList1Id].ToString() }, new { @class = "side-li-mymusiclibiary-img" })</li>
-                    </ul>
+        <div class="playBar">
+            <div class="playListDetail">
+                <div class="advancedItemGroup">
+                    @Html.Action("_PlayLists")
                 </div>
-                <div class="mainbox">
-                    @RenderBody()
                 </div>
             </div>
-            <div id="footer">
-                <div id="playerPanel">
 
-                    <!-- 封面與歌名div -->
-                    <figure id="playerfigure">
-                        <img src="#" alt="" class="title">
-                        <figcaption id="playerfigcaption" class="description title"></figcaption>
-                    </figure>
-                    <div id="titlePanel">
-                        <span id="Descriptiontwo" class="description"></span><br>
-                        <span id="singer"></span>
-                    </div>
-
-
-                    <!-- 基本按鍵div -->
-                    <div id="btnPanel">
-                        <div id="random" class="btn"><img src="~/Content/random.png"></div>
-                        <div id="prev" class="btn"><img src="~/Content/prev.png"></div>
-                        <div id="play" class="btn"><img src="~/Content/play.png"></div>
-                        <div id="pause" class="btn"><img src="~/Content/pause.png"></div>
-                        <div id="next" class="btn"><img src="~/Content/next.png"></div>
-                        <div id="replay" class="btn"><img src="~/Content/replay.png"></div>
-                    </div>
-
-                    <!-- 進度條div -->
-                    <div id="progressPanel">
-                        <span id="nowTime">00:00</span>
-                        <input id="progress" class="demoSlider" type="range" min="0" max="100" step="0.01" value="0">@*此處加class與試聽波放器連動*@
-                        <span id="totalTime">00:00</span>
-                    </div>
-
-                    <!-- 音量條div -->
-                    <div id="volumePanel">
-                        <img src="~/Content/sound.png" data-sound="volumeImg" id="volumeImg" class="sound">
-                        <img src="~/Content/mute.png" data-sound="muteImg" id="muteImg" class="sound">
-                        <input id="volumeBar" type="range" min="0" max="1" step="0.01" value="0.5">
-                    </div>
-
-                    <!--播放器本體-->
-                    @*<audio id="player" src="mp3/‪02 紅魔 「Un-demystified Fantasy」.mp3"></audio>*@
-                    <audio class="originalAudio"></audio>
-                    <audio id="player" class="demoAudio"></audio>
-                </div>
-            </div>
-            <script src="@Url.Content("~/Scripts/flushpage.js")" type="text/javascript"></script>
-            <script>
-                //撥放器開始
-                //這兩個是最終會存回資料庫的試聽開頭與結尾的秒數，浮點數類型
-                var demoStart;
-                var demoEnd;
-                //新增
-                var m_soid;
-                var m_singer;
-                var m_song;
-                //****
-                var oplaying = false;
-                var dplaying = false;
-                var fileName;
-
-                $(".opause").css("display", "none");
-                $(".dpause").css("display", "none");
-                var music = $(".originalAudio")[0];
-                music.volume = 0.6;
-                var demoMusic = $(".demoAudio")[0];
-                demoMusic.volume = 0.6;
-
-                //讀取檔案，一次只能讀取一個
-                //$("#upload").on("change", function () {
-                //    let file = document.getElementById("upload").files[0];
-                //    if (file.type != "audio/mp3") {
-                //        file = null;
-                //    }
-
-                //    let reader = new FileReader();
-                //    reader.readAsDataURL(file);
-                //    reader.onload = function (e) {
-                //        music.src = e.target.result;
-                //        demoMusic.src = e.target.result;
-                //    }
-                //});
-
-                //讀取音樂時會進行初始化
-                $(".demoAudio").on("durationchange", function () { //originalAudio換成demoAudio
-                    //   let totalTime = parseInt(music.duration);
-                    let totalTime = demoEnd - demoStart; //為與新player變數一致將demoTotal換成totalTime
-                    //$(".originalSlider").prop("max", totalTime);
-                    //       $(".demoSlider").prop("max",totalTime);
-                    $(".demoSlider").prop("max", totalTime);
-                    //$(".totalTime").text(getTimeText(totalTime));
-                    //         $(".totalDemo").text(getTimeText(totalTime));
-                    // $(".totalDemo").text(getTimeText(totalTime));//網頁已預設載入,不再刷新
-
-                    //*新撥放器加入
-                    //$("#progress").prop("max", totalTime); //與function setEnd()作相同事情故移除
-                    //let m1 = parseInt(totalTime / 600);
-                    //let m2 = parseInt(totalTime / 60);
-                    //let s1 = parseInt(totalTime % 60 / 10);
-                    //let s2 = parseInt(totalTime % 60 % 10);
-                    //$("#totalTime").text(`${m1}${m2}:${s1}${s2}`);
-
-                    //同時初始化滑動條
-                    $("#slider-range").slider({
-                        range: true,
-                        min: 0,
-                        max: `${music.duration}`,
-                        step: 0.01,
-                        values: [0, music.duration],
-                        slide: function () {
-                            demoStart = $("#slider-range").slider("values", 0)
-                            setStart();
-                            demoEnd = $("#slider-range").slider("values", 1)
-                            setEnd();
+            <div class="header-button">
+                @{
+                    if (Session[CDictionary.SK_ACCOUNT] == null || string.IsNullOrWhiteSpace(Session[CDictionary.SK_ACCOUNT].ToString()))
+                    {
+                        <button type="button">註冊</button>
+                        @*<button type="button">@Html.ActionLink("登入", "Login", "Common", null, new { @class = "side-li-home-img" })</button>*@
+                        <button id="logininterface" type="button">登入</button>
+                    }
+                    else
+                    {
+                        if (Session[CDictionary.SK_ACCOUNT].ToString() == "aaa")
+                        {
+                            <button id="admininterface" type="button">後臺管理介面</button>
                         }
-                    });
-                    $(".start").val(demoStart);
-                    $(".end").val(demoEnd);
+                        <span>hi,@Session[CDictionary.SK_ACCOUNT].ToString()</span>
+                        <button type="button">會員中心</button>
+                        <button type="button">@Html.ActionLink("個人短訊息", "MessageBox", "Message", null, new { @class = "side-li-home-img" })</button>
+                        <button id="logoutinterface" type="button">登出</button>
+                        @*<button id="logoutinterface2" type="button">@Html.ActionLink("登出", "Loginout", "Common", null, new { @class = "side-li-home-img" })</button>*@
+
+                    }
+                }
+            </div>
+        </div>
+        <div id="container">
+
+            <div class="sidebox">
+                @*@Session[CDictionary.SK_sideboxList1Name] = "";
+                @Session[CDictionary.SK_sideboxList1Method] = "";
+                @Session[CDictionary.SK_sideboxList1Id] = "";*@
+                <ul>
+                    <li class="side-li-home-img">@Html.ActionLink("首頁", "Index", "Album", null, new { @class = "side-li-home-img" })</li>
+                    <li class="side-li-serach-img">@Html.ActionLink("搜尋", "Search", "Album", null, new { @class = "side-li-home-img" })</li>
+                    @*<li class="side-li-mymusiclibiary-img">@Html.ActionLink(Session[CDictionary.SK_sideboxList1Name].ToString(), Session[CDictionary.SK_sideboxList1Method].ToString(), "Album", new { account = Session[CDictionary.SK_sideboxList1Id].ToString() }, new { @class = "side-li-mymusiclibiary-img" })</li>*@
+                    @if (Session[CDictionary.SK_ACCOUNT] != null && !string.IsNullOrWhiteSpace(Session[CDictionary.SK_ACCOUNT].ToString()))
+                    {
+                        <li class="side-li-mymusiclibiary-img">@Html.ActionLink("你的音樂庫", "PlayLists", "Album", null, new { @class = "side-li-home-img" })</li>
+                        <li class="side-li-serach-img">@Html.ActionLink("我的發行", "MyAlbumList", "Album", new { account = Session[CDictionary.SK_ACCOUNT].ToString() }, new { @class = "side-li-home-img" })</li>
+                    }
+                    <li class="side-li-mymusiclibiary-img">@Html.ActionLink("test", "test", "Album", null, new { @class = "side-li-home-img" })</li>
+                </ul>
+            </div>
+            <div class="mainbox">
+                @RenderBody()
+            </div>
+        </div>
+        <div id="footer">
+            <div id="playerPanel">
+
+                <!-- 封面與歌名div -->
+                <figure id="playerfigure">
+                    <img id="playercover" src="" alt="" class="title" width="80" height="80">
+                    <figcaption id="playerfigcaption" class="description title"></figcaption>
+                </figure>
+                <div id="titlePanel">
+                    <span id="Descriptiontwo" class="description"></span><br>
+                    <span id="singer"></span>
+                </div>
+
+
+                <!-- 基本按鍵div -->
+                <div id="btnPanel">
+                    <div id="random" class="btn"><img src="~/Content/random.png"></div>
+                    <div id="prev" class="btn"><img src="~/Content/prev.png"></div>
+                    <div id="play" class="btn"><img src="~/Content/play.png"></div>
+                    <div id="pause" class="btn"><img src="~/Content/pause.png"></div>
+                    <div id="next" class="btn"><img src="~/Content/next.png"></div>
+                    <div id="replay" class="btn"><img src="~/Content/replay.png"></div>
+                </div>
+
+                <!-- 進度條div -->
+                <div id="progressPanel">
+                    <span id="nowTime">00:00</span>
+                    <input id="progress" class="demoSlider" type="range" min="0" max="100" step="0.01" value="0">@*此處加class與試聽波放器連動*@
+                    <span id="totalTime">00:00</span>
+                </div>
+
+                <div id="playListPanel">
+                    <button class="btn btn-outline-secondary playListbtn">撥放清單</button>
+                </div>
+
+                <!-- 音量條div -->
+                <div id="volumePanel">
+                    <img src="~/Content/sound.png" data-sound="volumeImg" id="volumeImg" class="sound">
+                    <img src="~/Content/mute.png" data-sound="muteImg" id="muteImg" class="sound">
+                    <input id="volumeBar" type="range" min="0" max="1" step="0.01" value="0.5">
+                </div>
+
+                <!--播放器本體-->
+                @*<audio id="player" src="mp3/‪02 紅魔 「Un-demystified Fantasy」.mp3"></audio>*@
+                <audio class="originalAudio"></audio>
+                <audio id="player" class="demoAudio"></audio>
+            </div>
+        </div>
+        <script src="@Url.Content("~/Scripts/flushpage.js")" type="text/javascript"></script>
+        <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+        <script>
+        //撥放器開始
+        //這兩個是最終會存回資料庫的試聽開頭與結尾的秒數，浮點數類型
+        var demoStart;
+        var demoEnd;
+        //新增
+        var m_soid;
+        var m_singer;
+        var m_song;
+            var m_songcover;
+            var playerAjaxExecu = false;
+        //****
+        var oplaying = false;
+        var dplaying = false;
+        var fileName;
+
+        $(".opause").css("display", "none");
+        $(".dpause").css("display", "none");
+        var music = $(".originalAudio")[0];
+        music.volume = 0.6;
+        var demoMusic = $(".demoAudio")[0];
+        demoMusic.volume = 0.6;
+
+        //讀取檔案，一次只能讀取一個
+        //$("#upload").on("change", function () {
+        //    let file = document.getElementById("upload").files[0];
+        //    if (file.type != "audio/mp3") {
+        //        file = null;
+        //    }
+
+        //    let reader = new FileReader();
+        //    reader.readAsDataURL(file);
+        //    reader.onload = function (e) {
+        //        music.src = e.target.result;
+        //        demoMusic.src = e.target.result;
+        //    }
+        //});
+
+        //讀取音樂時會進行初始化
+        $(".demoAudio").on("durationchange", function () { //originalAudio換成demoAudio
+            //   let totalTime = parseInt(music.duration);
+            let totalTime = demoEnd - demoStart; //為與新player變數一致將demoTotal換成totalTime
+            //$(".originalSlider").prop("max", totalTime);
+            //       $(".demoSlider").prop("max",totalTime);
+            $(".demoSlider").prop("max", totalTime);
+            //$(".totalTime").text(getTimeText(totalTime));
+            //         $(".totalDemo").text(getTimeText(totalTime));
+            // $(".totalDemo").text(getTimeText(totalTime));//網頁已預設載入,不再刷新
+
+            //*新撥放器加入
+            //$("#progress").prop("max", totalTime); //與function setEnd()作相同事情故移除
+            //let m1 = parseInt(totalTime / 600);
+            //let m2 = parseInt(totalTime / 60);
+            //let s1 = parseInt(totalTime % 60 / 10);
+            //let s2 = parseInt(totalTime % 60 % 10);
+            //$("#totalTime").text(`${m1}${m2}:${s1}${s2}`);
+
+            //同時初始化滑動條
+            $("#slider-range").slider({
+                range: true,
+                min: 0,
+                max: `${music.duration}`,
+                step: 0.01,
+                values: [0, music.duration],
+                slide: function () {
+                    demoStart = $("#slider-range").slider("values", 0)
                     setStart();
+                    demoEnd = $("#slider-range").slider("values", 1)
                     setEnd();
-                });
+                }
+            });
+            $(".start").val(demoStart);
+            $(".end").val(demoEnd);
+            setStart();
+            setEnd();
+        });
 
-                //播放器的timer
-                $(".originalAudio").on("timeupdate", function () {
-                    $(".originalSlider").prop("value", music.currentTime);
-                    let now = parseInt(music.currentTime);
-                    $(".nowTime").text(getTimeText(now));
-                });
-                $(".demoAudio").on("timeupdate", function () {
+        //播放器的timer
+        $(".originalAudio").on("timeupdate", function () {
+            $(".originalSlider").prop("value", music.currentTime);
+            let now = parseInt(music.currentTime);
+            $(".nowTime").text(getTimeText(now));
+        });
+            $(".demoAudio").on("timeupdate", function () {
 
-                    //新撥放器新增開始
-                    //$("#progress").prop("value", demoAudio.currentTime);
-                    let now = parseInt(demoMusic.currentTime);//player-->demoaudio修改
-                    let m1 = parseInt(now / 600);
-                    let m2 = parseInt(now / 60);
-                    let s1 = parseInt(now % 60 / 10);
-                    let s2 = parseInt(now % 60 % 10);
-                    $("#nowTime").text(`${m1}${m2}:${s1}${s2}`);
-                    //進度條的變化
-                    let persent = now / totalTime * 100;
-                    let p = parseInt($("#progress").css("width")) / 100;
-                    let f = persent * p;
-                    console.log(f);
-                    $("#progress").css({ "background-image": `-webkit-linear-gradient(left , #5599FF ${f}px,#fff 0px)` });
-                    //新撥放器新增結束
+                //新撥放器新增開始
+                //$("#progress").prop("value", demoAudio.currentTime);
+                let now = parseInt(demoMusic.currentTime);//player-->demoaudio修改
+                let m1 = parseInt(now / 600);
+                let m2 = parseInt(now / 60);
+                let s1 = parseInt(now % 60 / 10);
+                let s2 = parseInt(now % 60 % 10);
+                $("#nowTime").text(`${m1}${m2}:${s1}${s2}`);
+                //進度條的變化
+                let persent = now / totalTime * 100;
+                let p = parseInt($("#progress").css("width")) / 100;
+                let f = persent * p;
+                //  console.log(f);
+                $("#progress").css({ "background-image": `-webkit-linear-gradient(left , #5599FF ${f}px,#fff 0px)` });
+                //新撥放器新增結束
 
-                    $(".demoSlider").prop("value", demoMusic.currentTime);
-                    // let now = parseInt(demoMusic.currentTime);//變數名稱與上面新撥放器now相衝
-                    //  $(".nowDemo").text(getTimeText(now));//現在播放時間移除
-                    if (demoMusic.currentTime > $(".demoSlider").attr("max")) {
-                        demoMusic.pause();
-                        dplaying = false;
-                        $(".dplay").css("display", "inline");
-                        $(".dpause").css("display", "none")
-                        demoMusic.currentTime = demoStart;
-                    }
-                    //試聽淡入效果(因為設定上淡入三秒淡出四秒，所以要是試聽時間在七秒內會出現音量bug)
-                    if (demoMusic.currentTime < demoStart + 3) {
-                        demoMusic.volume = (demoMusic.currentTime - demoStart) * 0.2;
-                    }
-                    //試聽淡出效果
-                    else if (demoMusic.currentTime + 4 > demoEnd) {
-                        demoMusic.volume = (demoEnd - demoMusic.currentTime) * 0.1;
-                    }
-                    else {
-                        demoMusic.volume = 0.6;
-                    }
-                });
-
-                //音樂播放暫停鍵
-                $(".vbtn").on("click", function () {
-                    console.log($(this).prop("class"));
-                    //if ($(this).prop("className") == "vbtn oplay") {
-                    //    music.play();
-                    //    demoMusic.pause();
-                    //    oplaying = true;
-                    //    dplaying = false;
-                    //    $(".oplay").css("display", "none");
-                    //    $(".opause").css("display", "inline")
-                    //    $(".dplay").css("display", "inline")
-                    //    $(".dpause").css("display", "none")
-                    //}
-                    if ($(this).prop("class") == "vbtn dplay") {
-                        //載入音樂參數
-                        music.src = $(this).data('playurl');
-                        demoMusic.src = $(this).data('playurl');
-                        demoStart = $(this).data('start');
-                        demoEnd = $(this).data('end');
-                        m_soid = $(this).data('soid');
-                        m_singer = $(this).data('singer');
-                        m_song = $(this).data('songn');
-                        $("#Descriptiontwo").text(m_song);
-                        $("#singer").text(m_singer);
-                        //載入音樂連結
-                        demoMusic.play();
-                        //    music.pause();
-
-                        dplaying = true;
-                        //oplaying = false;
-                        $(".dplay").css("display", "inline");
-                        $(".dpause").css("display", "none");
-                        $(this).css("display", "none");
-                        $(this).next(".dpause").css("display", "inline");
-                        $("#play").css("display", "none");
-                        $("#pause").css("display", "inline-block")
-                    }
-                    //else if ($(this).prop("class") == "vbtn opause") {
-                    //    music.pause();
-                    //    oplaying = false;
-                    //    $(".oplay").css("display", "inline");
-                    //    $(".opause").css("display", "none")
-                    //}
-                    else if ($(this).prop("class") == "vbtn dpause") {
-                        demoMusic.pause();
-                        dplaying = false;
-                        $(".dplay").css("display", "inline");
-                        $(".dpause").css("display", "none");
-                        $(this).css("display", "none");
-                        $(this).next(".dplay").css("display", "inline");
-                        $("#play").css("display", "inline-block");
-                        $("#pause").css("display", "none")
-                    }
-                })
-
-                //選擇進度條後立刻發動值的change(否則會出現延遲，造成改值失敗)
-                $(".originalSlider").on('input', function () {
-                    music.pause();
-                    $(this).trigger("change");
-                })
-                $(".demoSlider").on('input', function () {
+                $(".demoSlider").prop("value", demoMusic.currentTime);
+                // let now = parseInt(demoMusic.currentTime);//變數名稱與上面新撥放器now相衝
+                //  $(".nowDemo").text(getTimeText(now));//現在播放時間移除
+                if (demoMusic.currentTime > $(".demoSlider").attr("max")) {
                     demoMusic.pause();
-                    $(this).trigger("change");
-                })
-                //音樂進度條改變
-                $(".originalSlider").on("change", function () {
-                    music.currentTime = this.value;
-                });
-                $(".demoSlider").on("change", function () {
-                    demoMusic.currentTime = this.value;
-                });
-                //拖動進度條直到放開滑鼠才重新開始播放
-                $(".originalSlider").on("mouseup", function () {
-                    if (oplaying)
-                        music.play();
-                });
-                $(".demoSlider").on("mouseup", function () {
-                    if (dplaying)
-                        demoMusic.play();
-                });
-
-                //製作試聽用
-                //按鍵設置試聽開頭與結尾
-                $(".setStart").on("click", function () {
-                    demoStart = music.currentTime;
-                    setStart();
-                });
-                $(".setEnd").on("click", function () {
-                    demoEnd = music.currentTime;
-                    setEnd();
-                });
-
-                //取得音樂時間文字的方法(第二個有給到小數後兩位)
-                function getTimeText(num) {
-                    let m1 = parseInt(num / 600);
-                    let m2 = parseInt(num / 60 % 10);
-                    let s1 = parseInt(num % 60 / 10);
-                    let s2 = parseInt(num % 60 % 10);
-                    return `${m1}${m2}:${s1}${s2}`;
-                }
-                function getTimeText2(num) {
-                    let m1 = parseInt(num / 600);
-                    let m2 = parseInt(num / 60 % 10);
-                    let s1 = parseInt(num % 60 / 10);
-                    let s2 = (num % 60 % 10).toFixed(2);
-                    return `${m1}${m2}:${s1}${s2}`;
-                }
-
-                //設定範圍初始值與結尾值的方法
-                function setStart() {
-                    $(".start").val(demoStart);
-                    if (demoStart > demoMusic.currentTime) {
-                        demoMusic.currentTime = demoStart;
-                        $(".demoSlider").attr("value", `${demoStart}`);
-                        /*$("#progress").attr("value", `${demoStart}`);*/ //新加入新撥放器控制,已用.demoSlider去控制不重複加
+                    dplaying = false;
+                    $(".dplay").css("display", "inline");
+                    $(".dpause").css("display", "none")
+                    $("#play").css("display", "inline-block");  //新增,為與舊撥放器同步
+                    $("#pause").css("display", "none")          //新增,為與舊撥放器同步
+                    playing = false;                            //新增,為與舊撥放器同步
+                    if (playerAjaxExecu == false) {
+                        playerAjaxExecu = true;
+                        $.ajax({
+                            url: "@Url.Action("nextPlayLists","Album")?amid=" + m_soid,
+                            //   data: { term: request.term.trim() },
+                            data: {},
+                            type: "POST",
+                            async: true,
+                            cache: false,
+                            contentType: "application/json; charset=utf-8",
+                            success: function (result) {
+                                if (result == '查無此') {
+                                    playerAjaxExecu = false;
+                                }
+                                console.log(result);
+                                music.src = "@Url.Content("~/")MusicFiles/" + result.fFilePath;
+                                demoMusic.src = "@Url.Content("~/")MusicFiles/" + result.fFilePath;
+                                demoStart = result.fPlayStart;
+                                demoEnd = result.fPlayEnd;
+                                m_songcover = "@Url.Content("~/")CoverFiles/" + result.fCoversource;
+                                m_soid = result.fProductID;
+                                m_singer = result.fComposer;
+                                m_song = result.fProductName;
+                                $("#Descriptiontwo").text(m_song);
+                                $("#singer").text(m_singer);
+                                $("#playercover").attr("src", m_songcover);
+                            },
+                            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                                console.log("Error.");
+                                playerAjaxExecu = false;
+                            }
+                        });
                     }
-                    $(".demoSlider").attr("min", `${demoStart}`);
-                    /*  $("#progress").attr("min", `${demoStart}`);*/ //新加入新撥放器控制,已用.demoSlider去控制不重複加
-
-                }
-                function setEnd() {
-                    $(".end").val(demoEnd);
-                    /* $(".totalDemo").text(getTimeText(demoEnd));*///網頁已預設載入,不再刷新
-                    $("#totalTime").text(getTimeText(demoEnd));
-                    if (demoEnd < demoMusic.currentTime) {
-                        demoMusic.currentTime = demoEnd;
-                        $(".demoSlider").attr("value", `${demoEnd}`);
-                        /*  $("#progress").attr("value", `${demoEnd}`);*///新加入新撥放器控制,已用.demoSlider去控制不重複加
-                    }
-                    $(".demoSlider").attr("max", `${demoEnd}`);
-                    /*   $("#progress").attr("max", `${demoEnd}`);*///新加入新撥放器控制,已用.demoSlider去控制不重複加
-                }
-                //撥放器結束
-
-                //新撥放器開始
-                var playing = false;
-                var nowVolume = demoMusic.volume; //player-->demoaudio修改
-                $("#pause").css("display", "none");
-                $("#muteImg").css("display", "none");
-                $("#volumeBar").css({ "background-image": "-webkit-linear-gradient(left , #5599FF 0%,#fff 0px)" });
-                $("#play").click(function () {
-                    demoMusic.play();//player-->demoaudio修改
+                demoMusic.currentTime = demoStart;
+                demoMusic.volume = 0.6;
+                let totalTime = demoEnd - demoStart; //為與新player變數一致將demoTotal換成totalTime
+                $(".demoSlider").prop("max", totalTime);
+                setTimeout(function () {
+                    dplaying = true;
                     playing = true;
                     $("#play").css("display", "none");
-                    $("#pause").css("display", "inline-block")
+                    $("#pause").css("display", "inline-block");
+                    demoMusic.play();
+                    playerAjaxExecu = false;
+                }, 1000);
+                let plink = "@Url.Action("_PlayLists","Album")";
+                $.post(plink, { ajax: true }, function (data) {
+                    $(".playListDetail").html(data);
                 })
-                //音樂暫停鍵
-                $("#pause").click(function () {
-                    demoMusic.pause();//player-->demoaudio修改
-                    playing = false;
-                    $("#play").css("display", "inline-block");
-                    $("#pause").css("display", "none")
-                })
+                }
 
-                //調整音量時能立即更動而不用放開滑鼠
-                $("#volumeBar").on('input', function () {
-                    $(this).trigger("change");
-                })
-                //音量調節鍵
-                $("#volumeBar").change(function () {
-                    demoMusic.volume = this.value;
-                    let v = this.value * 100;
-                    $("#volumeBar").css({ "background-image": `-webkit-linear-gradient(left , #5599FF ${v}%,#fff 0px)` });
-                    if (demoMusic.volume == 0) {
-                        $("#volumeImg").css("display", "none");
-                        $("#muteImg").css("display", "inline-block");
-                    }
-                    else {
-                        $("#volumeImg").css("display", "inline-block");
-                        $("#muteImg").css("display", "none");
-                    }
-                });
 
-                //靜音鍵
-                $(".sound").click(function () {
-                    let data = $(this).data("sound");
-                    switch (data) {
-                        case "volumeImg":
-                            nowVolume = demoMusic.volume;
-                            demoMusic.volume = 0;
-                            $("#volumeBar").prop("value", 0);
-                            $("#volumeBar").css({ "background-image": `-webkit-linear-gradient(left , #5599FF ${0}%,#fff 0px)` });
-                            $("#volumeImg").css("display", "none");
-                            $("#muteImg").css("display", "inline-block");
-                            break;
+            
 
-                        case "muteImg":
-                            demoMusic.volume = nowVolume;
-                            $("#volumeBar").prop("value", nowVolume);
-                            $("#volumeBar").css({ "background-image": `-webkit-linear-gradient(left , #5599FF ${nowVolume * 100}%,#fff 0px)` });
-                            $("#volumeImg").css("display", "inline-block");
-                            $("#muteImg").css("display", "none");
-                            break;
-                    }
-                });
+            //試聽淡入效果(因為設定上淡入三秒淡出四秒，所以要是試聽時間在七秒內會出現音量bug)
+            if (demoMusic.currentTime < demoStart + 3) {
+                demoMusic.volume = (demoMusic.currentTime - demoStart) * 0.2;
+            }
+            //試聽淡出效果
+            else if (demoMusic.currentTime + 4 > demoEnd) {
+                demoMusic.volume = (demoEnd - demoMusic.currentTime) * 0.1;
+            }
+            else {
+                demoMusic.volume = 0.6;
+            }
+        });
 
-                //選擇進度條後立刻發動值的change(否則會出現延遲，造成改值失敗)
-                $("#progress").on('input', function () {
-                    demoMusic.pause();//player-->demoaudio修改
-                    $(this).trigger("change");
-                })
-                //音樂進度條改變
-                $("#progress").change(function () {
-                    demoMusic.currentTime = this.value;//player-->demoaudio修改
-                });
-                //拖動進度條直到放開滑鼠才重新開始播放
-                $("#progress").mouseup(function () {
-                    if (playing)
-                        demoMusic.play();//player-->demoaudio修改
-                });
+        //音樂播放暫停鍵
+        $(".vbtn").on("click", function () {
+            console.log($(this).prop("class"));
+            //if ($(this).prop("className") == "vbtn oplay") {
+            //    music.play();
+            //    demoMusic.pause();
+            //    oplaying = true;
+            //    dplaying = false;
+            //    $(".oplay").css("display", "none");
+            //    $(".opause").css("display", "inline")
+            //    $(".dplay").css("display", "inline")
+            //    $(".dpause").css("display", "none")
+            //}
+            if ($(this).prop("class") == "vbtn dplay") {
+                //載入音樂參數
+                music.src = $(this).data('playurl');
+                demoMusic.src = $(this).data('playurl');
+                demoStart = $(this).data('start');
+                demoEnd = $(this).data('end');
+                m_songcover = $("#coversource").attr("src");
+            //    console.log($(this).data('songcover'));
+                m_soid = $(this).data('soid');
+                m_singer = $(this).data('singer');
+                m_song = $(this).data('songn');
+                $("#Descriptiontwo").text(m_song);
+                $("#singer").text(m_singer);
+                $("#playercover").attr("src",m_songcover);
+                //載入音樂連結
+                demoMusic.play();
+                //    music.pause();
+                dplaying = true;
+                //oplaying = false;
+                $(".dplay").css("display", "inline");
+                $(".dpause").css("display", "none");
+                $(this).css("display", "none");
+                $(this).next(".dpause").css("display", "inline");
+                $("#play").css("display", "none");
+                $("#pause").css("display", "inline-block")
+            }
+            //else if ($(this).prop("class") == "vbtn opause") {
+            //    music.pause();
+            //    oplaying = false;
+            //    $(".oplay").css("display", "inline");
+            //    $(".opause").css("display", "none")
+            //}
+            else if ($(this).prop("class") == "vbtn dpause") {
+                demoMusic.pause();
+                dplaying = false;
+                $(".dplay").css("display", "inline");
+                $(".dpause").css("display", "none");
+                $(this).css("display", "none");
+                $(this).next(".dplay").css("display", "inline");
+                $("#play").css("display", "inline-block");
+                $("#pause").css("display", "none")
+            }
+        })
 
-                //搜尋條棒相關
-                $(".advancedBtn").click(function () {
-                    $(".advancedPanel").toggleClass("adSwitch");
-                })
+        //選擇進度條後立刻發動值的change(否則會出現延遲，造成改值失敗)
+        $(".originalSlider").on('input', function () {
+            music.pause();
+            $(this).trigger("change");
+        })
+        $(".demoSlider").on('input', function () {
+            demoMusic.pause();
+            $(this).trigger("change");
+        })
+        //音樂進度條改變
+        $(".originalSlider").on("change", function () {
+            music.currentTime = this.value;
+        });
+        $(".demoSlider").on("change", function () {
+            demoMusic.currentTime = this.value;
+        });
+        //拖動進度條直到放開滑鼠才重新開始播放
+        $(".originalSlider").on("mouseup", function () {
+            if (oplaying)
+                music.play();
+        });
+        $(".demoSlider").on("mouseup", function () {
+            if (dplaying)
+                demoMusic.play();
+        });
 
-                $(".searchBtn").click(function () {
-                    console.log("搜尋!");
-                })
+        //製作試聽用
+        //按鍵設置試聽開頭與結尾
+        $(".setStart").on("click", function () {
+            demoStart = music.currentTime;
+            setStart();
+        });
+        $(".setEnd").on("click", function () {
+            demoEnd = music.currentTime;
+            setEnd();
+        });
 
-                $(".typeAdd").click(function () {
-                    $(this).parents("advancedBlock").add($(".selectableItemPanel")[0]);
-                    $(".selectableItemPanel").toggleClass("adSwitch");
+        //取得音樂時間文字的方法(第二個有給到小數後兩位)
+        function getTimeText(num) {
+            let m1 = parseInt(num / 600);
+            let m2 = parseInt(num / 60 % 10);
+            let s1 = parseInt(num % 60 / 10);
+            let s2 = parseInt(num % 60 % 10);
+            return `${m1}${m2}:${s1}${s2}`;
+        }
+        function getTimeText2(num) {
+            let m1 = parseInt(num / 600);
+            let m2 = parseInt(num / 60 % 10);
+            let s1 = parseInt(num % 60 / 10);
+            let s2 = (num % 60 % 10).toFixed(2);
+            return `${m1}${m2}:${s1}${s2}`;
+        }
 
-                })
-            </script>
-            <!-- Optional JavaScript -->
+        //設定範圍初始值與結尾值的方法
+        function setStart() {
+            $(".start").val(demoStart);
+            if (demoStart > demoMusic.currentTime) {
+                demoMusic.currentTime = demoStart;
+                $(".demoSlider").attr("value", `${demoStart}`);
+                /*$("#progress").attr("value", `${demoStart}`);*/ //新加入新撥放器控制,已用.demoSlider去控制不重複加
+            }
+            $(".demoSlider").attr("min", `${demoStart}`);
+            /*  $("#progress").attr("min", `${demoStart}`);*/ //新加入新撥放器控制,已用.demoSlider去控制不重複加
+
+        }
+        function setEnd() {
+            $(".end").val(demoEnd);
+            /* $(".totalDemo").text(getTimeText(demoEnd));*///網頁已預設載入,不再刷新
+            $("#totalTime").text(getTimeText(demoEnd));
+            if (demoEnd < demoMusic.currentTime) {
+                demoMusic.currentTime = demoEnd;
+                $(".demoSlider").attr("value", `${demoEnd}`);
+                /*  $("#progress").attr("value", `${demoEnd}`);*///新加入新撥放器控制,已用.demoSlider去控制不重複加
+            }
+            $(".demoSlider").attr("max", `${demoEnd}`);
+            /*   $("#progress").attr("max", `${demoEnd}`);*///新加入新撥放器控制,已用.demoSlider去控制不重複加
+        }
+        //撥放器結束
+
+        //新撥放器開始
+        var playing = false;
+        var nowVolume = demoMusic.volume; //player-->demoaudio修改
+        $("#pause").css("display", "none");
+        $("#muteImg").css("display", "none");
+        $("#volumeBar").css({ "background-image": "-webkit-linear-gradient(left , #5599FF 0%,#fff 0px)" });
+        $("#play").click(function () {
+            demoMusic.play();//player-->demoaudio修改
+            playing = true;
+            $("#play").css("display", "none");
+            $("#pause").css("display", "inline-block")
+        })
+        //音樂暫停鍵
+        $("#pause").click(function () {
+            demoMusic.pause();//player-->demoaudio修改
+            playing = false;
+            $("#play").css("display", "inline-block");
+            $("#pause").css("display", "none")
+        })
+
+        //調整音量時能立即更動而不用放開滑鼠
+        $("#volumeBar").on('input', function () {
+            $(this).trigger("change");
+        })
+        //音量調節鍵
+        $("#volumeBar").change(function () {
+            demoMusic.volume = this.value;
+            let v = this.value * 100;
+            $("#volumeBar").css({ "background-image": `-webkit-linear-gradient(left , #5599FF ${v}%,#fff 0px)` });
+            if (demoMusic.volume == 0) {
+                $("#volumeImg").css("display", "none");
+                $("#muteImg").css("display", "inline-block");
+            }
+            else {
+                $("#volumeImg").css("display", "inline-block");
+                $("#muteImg").css("display", "none");
+            }
+        });
+
+        //靜音鍵
+        $(".sound").click(function () {
+            let data = $(this).data("sound");
+            switch (data) {
+                case "volumeImg":
+                    nowVolume = demoMusic.volume;
+                    demoMusic.volume = 0;
+                    $("#volumeBar").prop("value", 0);
+                    $("#volumeBar").css({ "background-image": `-webkit-linear-gradient(left , #5599FF ${0}%,#fff 0px)` });
+                    $("#volumeImg").css("display", "none");
+                    $("#muteImg").css("display", "inline-block");
+                    break;
+
+                case "muteImg":
+                    demoMusic.volume = nowVolume;
+                    $("#volumeBar").prop("value", nowVolume);
+                    $("#volumeBar").css({ "background-image": `-webkit-linear-gradient(left , #5599FF ${nowVolume * 100}%,#fff 0px)` });
+                    $("#volumeImg").css("display", "inline-block");
+                    $("#muteImg").css("display", "none");
+                    break;
+            }
+        });
+
+        //選擇進度條後立刻發動值的change(否則會出現延遲，造成改值失敗)
+        $("#progress").on('input', function () {
+            demoMusic.pause();//player-->demoaudio修改
+            $(this).trigger("change");
+        })
+        //音樂進度條改變
+        $("#progress").change(function () {
+            demoMusic.currentTime = this.value;//player-->demoaudio修改
+        });
+        //拖動進度條直到放開滑鼠才重新開始播放
+        $("#progress").mouseup(function () {
+            if (playing)
+                demoMusic.play();//player-->demoaudio修改
+        });
+
+        //撥放清單相關
+        $(".playListbtn").click(function () {
+         //   console.log("open")
+               let plink = "@Url.Action("_PlayLists","Album")";
+                 $.post(plink, {ajax:true}, function (data) {
+                $(".playListDetail").html(data);
+            })
+            $(".playListDetail").toggleClass("adSwitchP");
+        })
+
+
+        //搜尋條棒相關
+        $(".advancedBtn").click(function () {
+            $(".advancedPanel").toggleClass("adSwitch");
+        })
+
+        $(".searchBtn").click(function () {
+            console.log("搜尋!");
+        })
+
+        $(".typeAdd").click(function () {
+            $(this).parents("advancedBlock").add($(".selectableItemPanel")[0]);
+            $(".selectableItemPanel").toggleClass("adSwitch");
+
+        })
+
+        //選擇曲風
+        $(".selectableItem").on("click", function () {
+            let kindId = $(this).data("kind");
+            $(this).css("display", "none");
+            $(".advancedBlock").children().eq(kindId - 1).css("display", "inline-block");
+            $(".selectableItemPanel").toggleClass("adSwitch");
+        })
+        //點擊選擇的曲風即可取消
+        $(".selectedItem").on("click", function () {
+            let kindId = $(this).data("kind");
+            $(this).css("display", "none");
+            $(".selectableItemPanel").children().eq(kindId - 1).css("display", "inline-block");
+        })
+
+        //     function admininterface() {
+        $("#admininterface").on("click", function () {
+       //     window.location.href = '../Admin/Index/';
+            window.location.href = '@Url.Action("Index","Admin")';
+        })
+        $("#logoutinterface").on("click", function () {
+          //  window.location.href = '../../test/Common/Loginout/';
+            window.location.href = '@Url.Action("Loginout","Common")';
+        })
+        $("#logininterface").on("click", function () {
+         //   window.location.href = '../../test/Common/Login/';
+                        window.location.href = '@Url.Action("Login","Common")';
+        })
+
+  //      $(".searchtxt").on("keyup", function () {
+@*$(document).ready(function () {
+
+      $(".searchtxt").autocomplete({
+
+         source: function (request, response) {
+
+            //JSON.stringify(JSON.stringify(request));
+
+            $.ajax({
+               url: "@Url.Action("Find","Album")",
+               type: "GET",
+               cache: false,
+               data: request,
+               dataType: "json",
+               success: function (json) {
+                  response($.map(json, function (name, val) {
+                     return {
+                        label: name,
+                        value: val
+                     }
+                  }));
+               },
+               error: function (XMLHttpRequest, textStatus, errorThrown) {
+                  console.log("Error.");
+               }
+            });
+         },
+         minLength: 2,
+         select: function (event, ui) {
+            $(".searchtxt").val(ui.item.label);
+            return false;
+         }
+
+      });
+
+});*@
+        $(function () {
+    $(".searchtxt").autocomplete({
+        source: function (request, response) {
+            $.ajax({
+               // url: "@Url.Action("Find","Album")",
+                url: "@Url.Action("Find","Album")?term="+request.term.trim(),
+             //   data: { term: request.term.trim() },
+                data: {},
+                type: "POST",
+                async: true,
+                cache: false,
+                contentType: "application/json; charset=utf-8",
+                success: function (result) {
+                     response($.map(result, function (name, val) {
+                     return {
+                        label: name,
+                        value: val
+                     }
+                  }));
+                },
+               error: function (XMLHttpRequest, textStatus, errorThrown) {
+                  console.log("Error.");
+               }
+            });
+        },
+                 minLength: 1
+    });
+
+});
+
+
+
+        </script>
+        <!-- Optional JavaScript -->
 </body>
 </html>

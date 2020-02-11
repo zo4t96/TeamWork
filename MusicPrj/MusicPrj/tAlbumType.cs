@@ -22,6 +22,8 @@ namespace MusicPrj
     
         public int fTypeID { get; set; }
         public string fTypeName { get; set; }
+        public string fColor { get; set; }
+        public string fPhotoPath { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tAlbum> tAlbums { get; set; }

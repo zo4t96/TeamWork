@@ -21,5 +21,6 @@ $("a").on("click", function (e) {
         })
         window.addEventListener('popstate', function (e) {
         //    location.href = location.pathname;
-                changepage(location.pathname);
+                   changepage(location.pathname);
+     //       changepage(this.history.state.url);
         })

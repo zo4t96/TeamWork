@@ -1,4 +1,5 @@
 ﻿using MusicPrj.Models;
+using MusicPrj.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,11 +25,30 @@ namespace MusicPrj.Controllers
         }
 
         [HttpPost]
-        public ActionResult Login(bool ajax)
+        public ActionResult Login(CLoginViewModel post)
+        {
+            string account = post.emailoraccount;
+            string password = post.password;
+            Session[CDictionary.SK_ACCOUNT] = account;
+            CWebInitailize ad = new CWebInitailize();
+            ViewBag.InitialModel = ad.advancedInitial();
+            Response.Redirect("~/Album/Index/");
+            return View();
+        }
+
+        public ActionResult Loginout()
         {
             CWebInitailize ad = new CWebInitailize();
             ViewBag.InitialModel = ad.advancedInitial();
+            Session[CDictionary.SK_ACCOUNT] = "";
+         //   Response.Redirect(Request.Url.ToString());
             return View();
         }
-    }
+
+        public ActionResult _PlayLists()
+        {
+                return Content("<span>你還沒登入喔<span>");
+        }
+
+        }
 }

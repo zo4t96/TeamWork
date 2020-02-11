@@ -7,10 +7,10 @@ namespace MusicPrj.Models
 {
     public class CTakeKind
     {
-        public IEnumerable<tProductKind> takeAllKind()
+        public IEnumerable<tAlbumKind> takeAllKind()
         {
             dbProjectMusicStoreEntities db = new dbProjectMusicStoreEntities();
-            var result = db.tProductKinds.Select(p => p);
+            var result = db.tAlbumKinds.Select(p => p);
             return result;
         }
     }
